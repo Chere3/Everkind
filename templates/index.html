@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="./css/bootstrap.min.css" />
-    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="stylesheet" href="{{url_for("static", filename="/css/bootstrap.min.css")}}" />
+    <link rel="stylesheet" href="{{url_for("static", filename="/css/styles.css")}}" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -20,7 +20,7 @@
   </head>
 
   <body>
-    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="{{url_for("static", filename="/js/bootstrap.bundle.min.js")}}"></script>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <a
@@ -56,10 +56,13 @@
         </div>
       </div>
     </nav>
-    <div class="relative">
-      <h1 class="text-center text-xl-center position-absolute text-white">
-        Changing the lives of older people.
-      </h1>
+    <h1
+      class="text-black p-3"
+      style="font-family: var(--heading-font); font-size: 100px"
+    >
+      Changing the lives of older people
+    </h1>
+    <div>
       <div
         id="carouselExampleAutoplaying"
         class="carousel slide"
@@ -115,23 +118,25 @@
         </button>
       </div>
     </div>
-    <div class="card" style="width: 18rem">
-      <img
-        src="https://images.unsplash.com/photo-1543333995-a78aea2eee50?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        class="card-img-top"
-        alt="..."
-      />
-      <div class="card-body">
-        <h5 class="card-title" style="font-family: var(--heading-font)">
-          Intensive care
-        </h5>
-        <p class="card-text">
-          With our intensive care program we can help you to improve your health
-          and life quality.
-        </p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+    <section class="flex-row p-3">
+      <div class="card" style="width: 18rem">
+        <img
+          src="https://images.unsplash.com/photo-1543333995-a78aea2eee50?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          class="card-img-top"
+          alt="..."
+        />
+        <div class="card-body">
+          <h5 class="card-title" style="font-family: var(--heading-font)">
+            Intensive care
+          </h5>
+          <p class="card-text">
+            With our intensive care program we can help you to improve your
+            health and life quality.
+          </p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
       </div>
-    </div>
+    </section>
     <div class="container">
       <footer
         class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top"
