@@ -4,7 +4,11 @@ thePeoplesProyect = Flask(__name__)
 
 @thePeoplesProyect.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('home.html')
+
+@thePeoplesProyect.route('/signup')
+def signup():
+    return render_template('signup.html')
 
 @thePeoplesProyect.route('/api')
 def api():
