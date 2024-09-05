@@ -6,9 +6,13 @@ thePeoplesProyect = Flask(__name__)
 def home():
     return render_template('home.html')
 
-@thePeoplesProyect.route('/signup')
+@thePeoplesProyect.route('/auth/register')
 def signup():
     return render_template('signup.html')
+
+@thePeoplesProyect.route('/auth/login')
+def signin():
+    return render_template('signin.html')
 
 @thePeoplesProyect.route('/api')
 def api():
