@@ -1,13 +1,16 @@
 from flask import Flask, render_template, url_for, request, redirect
 from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
+from config import config
+from models.ModelUser import ModelUser
+from models.entities.User import User
+
+import datetime
 
 thePeoplesProyect = Flask(__name__)
 db = MySQL(thePeoplesProyect)
 
-thePeoplesProyect.config.from_object("config.DevelopmentConfig")
-
+thePeoplesProyect.config.from_object(config["development"])
 
 @thePeoplesProyect.route("/")
 def home():
@@ -62,4 +65,8 @@ def api():
 
 
 if __name__ == "__main__":
+    
     thePeoplesProyect.run(port=3300)
+   
+    
+    
