@@ -81,6 +81,15 @@ def signin():
 def logout():
     logout_user()
     return render_template("home.html")
+
+@thePeoplesProyect.route("/admin/users", methods=["GET", "POST"])
+def users():
+    users = db.connection.cursor()
+    users.execute("SELECT * FROM usuarios")
+    groupusers = users.fetchall()
+    users.close()
+    
+    return render_template("usuarios.html", users=groupusers)
     
 
 
