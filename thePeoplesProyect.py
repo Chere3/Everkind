@@ -1,16 +1,22 @@
 from flask import Flask, render_template, url_for, request, redirect
 from flask_mysqldb import MySQL
+from flask_login import LoginManager, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import config
 from models.ModelUser import ModelUser
 from models.entities.User import User
 
-import datetime
+import datetime 
 
 thePeoplesProyect = Flask(__name__)
 db = MySQL(thePeoplesProyect)
+adminSession = LoginManager(thePeoplesProyect)
 
 thePeoplesProyect.config.from_object(config["development"])
+
+@adminSession.user_loader
+def load_user(id):
+    return ModelUser.get_by_id(db, id)
 
 @thePeoplesProyect.route("/")
 def home():
@@ -25,7 +31,7 @@ def signup():
         email = request.form["email"]
         password = request.form["password"]
         encryptedPassword = generate_password_hash(password)
-        registeredDate = datetime.now()
+        registeredDate = datetime.datetime.now()
 
         # Check if user already exists
         cursor = db.connection.cursor()
@@ -50,9 +56,32 @@ def signup():
     return render_template("signup.html")
 
 
-@thePeoplesProyect.route("/auth/login")
+@thePeoplesProyect.route("/auth/login", methods=["GET", "POST"])
 def signin():
+    if request.method == "POST":
+       usuario = User(0, None, request.form["email"], request.form["clave"], None, None)
+       usuarioAutenticado = ModelUser.signin(db, usuario)
+       
+       if usuarioAutenticado is not None:
+           login_user(usuarioAutenticado)
+           if usuarioAutenticado.clave:
+               if usuarioAutenticado.perfil == "A":
+                return render_template("admin.html")
+               else:
+                return render_template("user.html")
+           else:
+                return "CONTRASEÑA INCORRECTA"
+       else:
+            return "El usuario no existe"
+
+           
     return render_template("signin.html")
+
+@thePeoplesProyect.route("/auth/logout")
+def logout():
+    logout_user()
+    return render_template("home.html")
+    
 
 
 @thePeoplesProyect.route("/api")
