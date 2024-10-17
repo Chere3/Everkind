@@ -1,12 +1,12 @@
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, request
 from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user, logout_user
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 from config import config
 from models.ModelUser import ModelUser
 from models.entities.User import User
 
-import datetime 
+import datetime
 
 thePeoplesProyect = Flask(__name__)
 db = MySQL(thePeoplesProyect)
@@ -14,9 +14,11 @@ adminSession = LoginManager(thePeoplesProyect)
 
 thePeoplesProyect.config.from_object(config["development"])
 
+
 @adminSession.user_loader
 def load_user(id):
     return ModelUser.get_by_id(db, id)
+
 
 @thePeoplesProyect.route("/")
 def home():
@@ -42,7 +44,7 @@ def signup():
 
         # Insert user info the database
         cursor.execute(
-            "INSERT INTO usuarios (nombre, correo, clave, fecha) VALUES (%s, %s, %s, %s)",
+            "INSERT INTO usuarios (nombre, correo, clave, fechareg) VALUES (%s, %s, %s, %s)",
             (name, email, encryptedPassword, registeredDate),
         )
 
@@ -59,38 +61,40 @@ def signup():
 @thePeoplesProyect.route("/auth/login", methods=["GET", "POST"])
 def signin():
     if request.method == "POST":
-       usuario = User(0, None, request.form["email"], request.form["clave"], None, None)
-       usuarioAutenticado = ModelUser.signin(db, usuario)
-       
-       if usuarioAutenticado is not None:
-           login_user(usuarioAutenticado)
-           if usuarioAutenticado.clave:
-               if usuarioAutenticado.perfil == "A":
-                return render_template("admin.html")
-               else:
-                return render_template("user.html")
-           else:
+        usuario = User(
+            0, None, request.form["email"], request.form["clave"], None, None
+        )
+        usuarioAutenticado = ModelUser.signin(db, usuario)
+
+        if usuarioAutenticado is not None:
+            login_user(usuarioAutenticado)
+            if usuarioAutenticado.clave:
+                if usuarioAutenticado.perfil == "A":
+                    return render_template("admin.html")
+                else:
+                    return render_template("user.html")
+            else:
                 return "CONTRASEÑA INCORRECTA"
-       else:
+        else:
             return "El usuario no existe"
 
-           
     return render_template("signin.html")
+
 
 @thePeoplesProyect.route("/auth/logout")
 def logout():
     logout_user()
     return render_template("home.html")
 
+
 @thePeoplesProyect.route("/admin/users", methods=["GET", "POST"])
 def users():
     users = db.connection.cursor()
     users.execute("SELECT * FROM usuarios")
-    groupusers = users.fetchall()
+    u = users.fetchall()
     users.close()
-    
-    return render_template("usuarios.html", users=groupusers)
-    
+
+    return render_template("usuarios.html", usuarios=u)
 
 
 @thePeoplesProyect.route("/api")
@@ -103,8 +107,5 @@ def api():
 
 
 if __name__ == "__main__":
-    
+
     thePeoplesProyect.run(port=3300)
-   
-    
-    

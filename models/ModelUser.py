@@ -1,23 +1,27 @@
 from models.entities.User import User
 
+
 class ModelUser:
+
     @classmethod
     def signin(self, db, usuario):
         try:
             # Get the user info from the form (esto no lo escriban)
             selUsuario = db.connection.cursor()
-            selUsuario.execute("SELECT * FROM usuarios WHERE correo = %s", (usuario.correo,))
+            selUsuario.execute(
+                "SELECT * FROM usuarios WHERE correo = %s", (usuario.correo,)
+            )
             u = selUsuario.fetchone()
-            
-            print(u[3])
             # Check if user already exists (esto no lo escriban)
             if u is not None:
-                return User(u[0], u[1], u[2], User.validarClave(u[3], usuario.clave), u[4], u[5])
+                return User(
+                    u[0], u[1], u[2], User.validarClave(u[3], usuario.clave), u[4], u[5]
+                )
             else:
                 return None
         except Exception as ex:
             raise Exception(ex)
-        
+
     # Get the user by his id (esto no lo escriban)
     @classmethod
     def get_by_id(self, db, id):
@@ -25,18 +29,14 @@ class ModelUser:
             selUsuario = db.connection.cursor()
             selUsuario.execute("SELECT * FROM usuarios WHERE id = %s", (id,))
             u = selUsuario.fetchone()
-            
+
             # If the user exists, return it (esto no lo escriban)
             if u is not None:
                 return User(u[0], u[1], u[2], u[3], u[4], u[5])
             else:
-            # If the user does not exist, return None (esto no lo escriban)
+                # If the user does not exist, return None (esto no lo escriban)
                 return None
-            
+
         # If an error occurs, raise an exception on the console (esto no lo escriban)
         except Exception as ex:
             raise Exception(ex)
-                
-                        
-            
-            
