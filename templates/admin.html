@@ -1,37 +1,29 @@
 {% extends 'layout.html' %}
-{% block titulo %}Welcome to the Home Page{% endblock %}
+{% block titulo %}
+  Welcome to the Home Page
+{% endblock %}
 {% block contenido %}
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand"
-               style="font-family: var(--heading-font)"
-               href="/"><i class="fa-solid fa-people-roof"></i>The Peoples Proyect</a>
-            <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav"
-                    aria-controls="navbarNav"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/`">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/admin/users">Usuarios</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#"></a>
-                    </li>
-                </ul>
-            </div>
-            <div class="d-flex gap-2">
-                <a class="btn btn-outline-success">{{ current_user.nombre }}</a>
-                <a class="btn btn-success" href="/auth/signout">Sign out</a>
-            </div>
-        </div>
-    </nav>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" style="font-family: var(--heading-font)" href="/"><i class="fa-solid fa-people-roof"></i>The Peoples Proyect</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/`">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/admin/users">Usuarios</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#"></a>
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex gap-2">
+        <a class="btn btn-outline-success">{{ current_user.nombre }}</a>
+        <a class="btn btn-success" href="/auth/signout">Sign out</a>
+      </div>
+    </div>
+  </nav>
 {% endblock %}

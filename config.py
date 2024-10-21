@@ -10,6 +10,5 @@ class DevelopmentConfig(Config):
     MYSQL_PASSWORD = ""
     MYSQL_DB = "thepeoplelproyect"
 
-config = {
-    "development": DevelopmentConfig
-}
+
+config = {"development": DevelopmentConfig}

@@ -8,9 +8,9 @@ body {
 }
 
 .carousel-inner {
-  max-height: 93vh;
+  max-height: 75vh;
 }
 
 .btn-primary {
-  background-color: #3D5E46;
+  background-color: #3d5e46;
 }

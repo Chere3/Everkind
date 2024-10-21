@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, flash, redirect
 from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user, logout_user
 from werkzeug.security import generate_password_hash
@@ -25,6 +25,7 @@ def home():
     return render_template("home.html")
 
 
+# Auth routes
 @thePeoplesProyect.route("/auth/register", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -60,23 +61,28 @@ def signup():
 
 @thePeoplesProyect.route("/auth/login", methods=["GET", "POST"])
 def signin():
+    # Check if the request is a POST
     if request.method == "POST":
-        usuario = User(
-            0, None, request.form["email"], request.form["clave"], None, None
-        )
-        usuarioAutenticado = ModelUser.signin(db, usuario)
+        user = User(0, None, request.form["email"], request.form["clave"], None, None)
+        authUser = ModelUser.signin(db, user)
 
-        if usuarioAutenticado is not None:
-            login_user(usuarioAutenticado)
-            if usuarioAutenticado.clave:
-                if usuarioAutenticado.perfil == "A":
+        # Check if the user exists
+        if authUser is not None:
+            login_user(authUser)
+            if authUser.clave:
+                # Check if the profile is admin or user
+                if authUser.perfil == "A":
                     return render_template("admin.html")
                 else:
                     return render_template("user.html")
             else:
-                return "CONTRASEÑA INCORRECTA"
+                # Send a message if the email or password is incorrect
+                flash("Email or password incorrect")
+                return redirect(request.url)
         else:
-            return "El usuario no existe"
+            # Send a message if the user does not exist
+            flash("The user does not exist")
+            return redirect(request.url)
 
     return render_template("signin.html")
 
@@ -84,17 +90,43 @@ def signin():
 @thePeoplesProyect.route("/auth/logout")
 def logout():
     logout_user()
+    # Send to home page
     return render_template("home.html")
 
 
 @thePeoplesProyect.route("/admin/users", methods=["GET", "POST"])
 def users():
+    # Get all the users from the database
     users = db.connection.cursor()
     users.execute("SELECT * FROM usuarios")
     u = users.fetchall()
     users.close()
 
-    return render_template("usuarios.html", usuarios=u)
+    # Send the users to the template
+    return render_template("users.html", usuarios=u)
+
+
+@thePeoplesProyect.route("/admin/users/create", methods=["GET", "POST"])
+def create_user():
+    passwordHash = generate_password_hash(request.form["password"])
+    date = datetime.datetime.now()
+
+    createUser = db.connection.cursor()
+    createUser.execute(
+        "INSERT INTO usuarios (nombre, correo, clave, fechareg, perfil) VALUES (%s, %s, %s, %s, %s)",
+        (
+            request.form["name"],
+            request.form["email"],
+            passwordHash,
+            date,
+            request.form["profile"],
+        ),
+    )
+
+    db.connection.commit()
+    flash("The user has been created successfully")
+
+    return redirect("/admin/users")
 
 
 @thePeoplesProyect.route("/api")
