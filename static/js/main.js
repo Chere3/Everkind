@@ -50,6 +50,7 @@ function setHomeLayoutHeight(windowHeight, windowWidth) {
     if (!homeLayout || !homeContent) return;
 
     if (windowWidth > 768) {
+        console.log(windowHeight);
         homeLayout.style.height = `${windowHeight}px`;
         homeContent.style.height = `${windowHeight}px`;
     } else {

@@ -23,10 +23,6 @@ input {
   max-width: 46% !important;
 }
 
-.carrousel-block {
-  max-height: 50vh !important;
-}
-
 .btn-primary {
   background-color: #e74e2c;
   border-color: #e74e2c;
