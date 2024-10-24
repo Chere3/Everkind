@@ -1,10 +1,13 @@
 {% extends 'layout.html' %}
-{% block titulo %}
-  Welcome to the Home Page
+{% block title %}
+  The Peoples Proyect
 {% endblock %}
-{% block contenido %}
-  <div class="flex">
-    <h1 class="text-black p-3" style="font-family: var(--heading-font); font-size: 100px">Changing the lives of older people</h1>
+{% block body %}
+  <section class="d-flex m-5 carrousel-block">
+    <span>
+      <h1 class="p-3" style="font-family: var(--heading-font); font-size: 100px; font-weight: 900;">Changing the lives of older people</h1>
+      <button class="btn d-flex px-3" href="/mission" style="text-decoration: none;"><h4>See how <span class="material-symbols-sharp" id="arrow_forward">arrow_forward</span></h4></button>
+    </span>
     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
@@ -20,56 +23,19 @@
           <img src="https://images.unsplash.com/photo-1454418747937-bd95bb945625?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3Dhttps://images.unsplash.com/photo-1454418747937-bd95bb945625?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="d-block w-100" alt="..." />
         </div>
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
     </div>
-  </div>
-  <section class="flex-row p-3">
-    <div class="card" style="width: 18rem">
-      <img src="https://images.unsplash.com/photo-1543333995-a78aea2eee50?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="card-img-top" alt="..." />
-      <div class="card-body">
-        <h5 class="card-title" style="font-family: var(--heading-font)">Intensive care</h5>
-        <p class="card-text">With our intensive care program we can help you to improve your health and life quality.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+  </section>
+  <section class="d-flex flex-column m-5 carrousel-block align-items-center">
+    <h2>Our services</h2>
+    <div class="d-flex">
+      <div class="card rounded-0" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
       </div>
     </div>
   </section>
-  <div class="container">
-    <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
-      <div class="col mb-3">
-        <a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
-          <svg class="bi me-2" width="40" height="32">
-            <use xlink:href="#bootstrap" />
-          </svg>
-        </a>
-        <p class="text-body-secondary">The peoples proyect &copy; 2024</p>
-      </div>
-      <div class="col mb-3">
-        <h5>Section</h5>
-        <ul class="nav flex-column">
-          <li class="nav-item mb-2">
-            <a href="#" class="nav-link p-0 text-body-secondary">Home</a>
-          </li>
-          <li class="nav-item mb-2">
-            <a href="#" class="nav-link p-0 text-body-secondary">Features</a>
-          </li>
-          <li class="nav-item mb-2">
-            <a href="#" class="nav-link p-0 text-body-secondary">Pricing</a>
-          </li>
-          <li class="nav-item mb-2">
-            <a href="#" class="nav-link p-0 text-body-secondary">FAQs</a>
-          </li>
-          <li class="nav-item mb-2">
-            <a href="#" class="nav-link p-0 text-body-secondary">About</a>
-          </li>
-        </ul>
-      </div>
-    </footer>
-  </div>
 {% endblock %}

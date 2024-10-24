@@ -7,12 +7,12 @@ from models.ModelUser import ModelUser
 from models.entities.User import User
 
 import datetime
+import traceback
 
+# Create the app
 thePeoplesProyect = Flask(__name__)
 db = MySQL(thePeoplesProyect)
 adminSession = LoginManager(thePeoplesProyect)
-
-thePeoplesProyect.config.from_object(config["development"])
 
 
 @adminSession.user_loader
@@ -29,32 +29,38 @@ def home():
 @thePeoplesProyect.route("/auth/register", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        # Get the user info from the form
-        name = request.form["name"]
-        email = request.form["email"]
-        password = request.form["password"]
-        encryptedPassword = generate_password_hash(password)
-        registeredDate = datetime.datetime.now()
+        try:
+            # Get the user info from the form
+            name = request.form["name"]
+            email = request.form["email"]
+            password = request.form["password"]
+            encryptedPassword = generate_password_hash(password)
+            registeredDate = datetime.datetime.now()
 
-        # Check if user already exists
-        cursor = db.connection.cursor()
-        cursor.execute("SELECT * FROM usuarios WHERE correo = %s", [email])
-        user = cursor.fetchone()
-        if user:
-            return "User already exists"
+            # Check if user already exists
+            cursor = db.connection.cursor()
+            cursor.execute("SELECT * FROM usuarios WHERE correo = %s", [email])
+            user = cursor.fetchone()
+            if user:
+                return "User already exists"
 
-        # Insert user info the database
-        cursor.execute(
-            "INSERT INTO usuarios (nombre, correo, clave, fechareg) VALUES (%s, %s, %s, %s)",
-            (name, email, encryptedPassword, registeredDate),
-        )
+            # Insert user info the database
+            cursor.execute(
+                "INSERT INTO usuarios (nombre, correo, clave, fechareg) VALUES (%s, %s, %s, %s)",
+                (name, email, encryptedPassword, registeredDate),
+            )
 
-        # Close the cursor and commit the changes
-        db.connection.commit()
-        cursor.close()
+            # Close the cursor and commit the changes
+            db.connection.commit()
+            cursor.close()
 
-        # Send to home page
-        return render_template("home.html")
+            # Send to home page
+            return render_template("home.html")
+
+        except Exception:
+            flash("An unexpected error occurred")
+            traceback.print_exc()
+            return redirect(request.url)
 
     return render_template("signup.html")
 
@@ -63,25 +69,34 @@ def signup():
 def signin():
     # Check if the request is a POST
     if request.method == "POST":
-        user = User(0, None, request.form["email"], request.form["clave"], None, None)
-        authUser = ModelUser.signin(db, user)
+        try:
+            # Get the user info from the form
+            user = User(
+                0, None, request.form["email"], request.form["clave"], None, None
+            )
+            # Get the user from the database
+            authUser = ModelUser.signin(db, user)
 
-        # Check if the user exists
-        if authUser is not None:
-            login_user(authUser)
-            if authUser.clave:
-                # Check if the profile is admin or user
-                if authUser.perfil == "A":
-                    return render_template("admin.html")
+            # Check if the user exists
+            if authUser is not None:
+                login_user(authUser)
+                if authUser.clave:
+                    # Check if the profile is admin or user
+                    if authUser.perfil == "A":
+                        return render_template("admin.html")
+                    else:
+                        return render_template("user.html")
                 else:
-                    return render_template("user.html")
+                    # Send a message if the email or password is incorrect
+                    flash("Email or password incorrect")
+                    return redirect(request.url)
             else:
-                # Send a message if the email or password is incorrect
-                flash("Email or password incorrect")
+                # Send a message if the user does not exist
+                flash("The user does not exist")
                 return redirect(request.url)
-        else:
-            # Send a message if the user does not exist
-            flash("The user does not exist")
+        except Exception:
+            flash("An unexpected error occurred")
+            traceback.print_exc()
             return redirect(request.url)
 
     return render_template("signin.html")
@@ -108,10 +123,13 @@ def users():
 
 @thePeoplesProyect.route("/admin/users/create", methods=["GET", "POST"])
 def create_user():
+    # Check if the request is a POST
     passwordHash = generate_password_hash(request.form["password"])
     date = datetime.datetime.now()
 
     createUser = db.connection.cursor()
+
+    # Insert the user into the database
     createUser.execute(
         "INSERT INTO usuarios (nombre, correo, clave, fechareg, perfil) VALUES (%s, %s, %s, %s, %s)",
         (
@@ -124,9 +142,67 @@ def create_user():
     )
 
     db.connection.commit()
+    # Close the cursor
     flash("The user has been created successfully")
 
     return redirect("/admin/users")
+
+
+@thePeoplesProyect.route("/admin/users/update/<int:id>", methods=["POST"])
+def update_user(id):
+    try:
+        # Update the user in the database
+        cursor = db.connection.cursor()
+        # Execute the query
+        cursor.execute(
+            "UPDATE usuarios SET nombre = %s, correo = %s, clave = %s, perfil = %s WHERE id = %s",
+            (
+                request.form["name"],
+                request.form["email"],
+                generate_password_hash(request.form["password"]),
+                request.form["profile"],
+                id,
+            ),
+        )
+
+        db.connection.commit()
+        cursor.close()
+
+        # Send a message to the user
+        flash("The user has been updated successfully")
+
+        return redirect("/admin/users")
+    except Exception:
+        # Send a message to the user saying that an error occurred
+        flash("An unexpected error occurred")
+        # Print the error pretty in the console
+        traceback.print_exc()
+
+        return redirect("/admin/users")
+
+
+@thePeoplesProyect.route("/admin/users/delete/<int:id>", methods=["POST"])
+def delete_user(id):
+    try:
+        # Delete the user from the database
+        cursor = db.connection.cursor()
+        cursor.execute("DELETE FROM usuarios WHERE id = %s", [id])
+
+        db.connection.commit()
+        cursor.close()
+
+        # Send a message to the user
+        flash("The user has been deleted successfully")
+
+        return redirect("/admin/users")
+
+    except Exception:
+        # Send a message to the user saying that an error occurred
+        flash("An unexpected error occurred")
+        # Print the error pretty in the console
+        traceback.print_exc()
+
+        return redirect("/admin/users")
 
 
 @thePeoplesProyect.route("/api")
@@ -138,6 +214,7 @@ def api():
     }
 
 
-if __name__ == "__main__":
+thePeoplesProyect.config.from_object(config["development"])
 
+if __name__ == "__main__":
     thePeoplesProyect.run(port=3300)

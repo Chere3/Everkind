@@ -15,7 +15,12 @@ class ModelUser:
             # Check if user already exists
             if u is not None:
                 return User(
-                    u[0], u[1], u[2], User.validarClave(u[3], usuario.clave), u[4], u[5]
+                    u[0],
+                    u[1],
+                    u[2],
+                    User.validatePassword(u[3], usuario.clave),
+                    u[4],
+                    u[5],
                 )
             else:
                 return None

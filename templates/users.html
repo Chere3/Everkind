@@ -1,5 +1,5 @@
-{% extends 'layout.html' %}
-{% block contenido %}
+{% extends 'basic.html' %}
+{% block content %}
   {% with messages=get_flashed_messages() %}
     {% if messages %}
       {% for message in messages %}
@@ -18,7 +18,7 @@
         <th scope="col">Fecha de registro</th>
         <th scope="col">Perfil</th>
         <th scope="col" colspan="2">
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-user-plus"></i></button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert"><i class="fa-solid fa-user-plus"></i></button>
         </th>
       </tr>
     </thead>
@@ -30,17 +30,80 @@
           <td>{{ u.2 }}</td>
           <td>{{ u.4 }}</td>
           <td>{{ u.5 }}</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
+          <td>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update{{ u.0 }}"><i class="fa-solid fa-user-pen"></i></button>
+          </td>
+          <td>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#delete{{ u.0 }}"><i class="fa-solid fa-user-minus"></i></button>
+          </td>
         </tr>
+        <!-- Modal update -->
+        <div class="modal fade" id="update{{ u.0 }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <form action="/admin/users/update/{{ u.0 }}" method="post">
+                <div class="modal-body">
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <input type="text" name="name" id="form3Example1cg" value="{{ u.1 }}" class="form-control form-control-lg" />
+                    <label class="form-label" for="form3Example1cg">Name</label>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <input type="email" name="email" id="form3Example3cg" value="{{ u.2 }}" class="form-control form-control-lg" />
+                    <label class="form-label" for="form3Example3cg">Email</label>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <input type="password" name="password" id="form3Example4cg" value="{{ u.3 }}" class="form-control form-control-lg" />
+                    <label class="form-label" for="form3Example4cg">Password</label>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <select class="form-select" name="profile" id="form3Example5cg">
+                      <option>Select an option</option>
+                      <!-- - <option {% if u.5 == 'A' %} selected {% endif %} value="A">Admin</option> -->
+                      <!--                      <option {% if 
+                        u.5 == 'U' %} selected {% endif %} value="U">User</option>                      -->
+                    </select>
+                    <label class="form-label" for="form3Example5cg">Select your role</label>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Edit user</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- Modal delete -->
+        <div class="modal fade" id="delete{{ u.0 }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete uer</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">Are you sure to delete the user with the ID: {{ u.0 }} ?</div>
+              <div class="modal-footer">
+                <form action="/admin/users/delete/{{ u.0 }}" method="post">
+                  <button type="button" class="btn btn-outline" data-bs-dismiss="modal">No</button>
+                  <button type="submit" class="btn btn-primary">Yes</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       {% endfor %}
     </tbody>
   </table>
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- Modal insert -->
+  <div class="modal fade" id="insert" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Insert new user</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form action="/admin/users/create" method="post">
@@ -70,7 +133,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-primary">Create user</button>
           </div>
         </form>

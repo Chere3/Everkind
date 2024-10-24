@@ -1,16 +1,82 @@
 :root {
-  --primary-font: "Moderustic", sans-serif;
-  --heading-font: "DM Serif Display", serif;
+  --primary-font: "Montserrat", sans-serif;
+  --heading-font: "Domine", serif;
+
+  --font-color: #020202;
+
+  --site-bg: #f1ede7;
 }
 
 body {
   font-family: var(--primary-font);
+  color: var(--font-color);
+  background-color: var(--site-bg);
 }
 
-.carousel-inner {
-  max-height: 75vh;
+/** Elements **/
+input {
+  border-radius: 0;
+}
+
+.carousel {
+  max-height: 50vh !important;
+  max-width: 46% !important;
+}
+
+.carrousel-block {
+  max-height: 50vh !important;
 }
 
 .btn-primary {
-  background-color: #3d5e46;
+  background-color: #e74e2c;
+  border-color: #e74e2c;
+  color: white !important;
+  border-radius: 0;
+}
+
+.btn-primary:hover {
+  background-color: #c34225;
+  border-color: #c34225;
+  color: white;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border-color: #e74e2c;
+  color: #e74e2c;
+  border-radius: 0;
+}
+
+.btn-outline:hover {
+  background-color: #e74e2c;
+  border-color: #e74e2c;
+  color: white !important;
+}
+
+.btn {
+  border-radius: 0;
+  color: #e74e2c;
+}
+
+.btn:hover {
+  color: #c34225;
+}
+
+/* Add arrow animation */
+#arrow_forward {
+  animation: forward-loop 2s infinite;
+}
+
+@keyframes forward-loop {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(10px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
 }
