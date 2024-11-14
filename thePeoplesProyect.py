@@ -12,6 +12,9 @@ import traceback
 # Create the app
 thePeoplesProyect = Flask(__name__)
 db = MySQL(thePeoplesProyect)
+
+# pythonAnywhere
+thePeoplesProyect.config.from_object(config["development"])
 adminSession = LoginManager(thePeoplesProyect)
 
 
@@ -31,23 +34,29 @@ def signup():
     if request.method == "POST":
         try:
             # Get the user info from the form
-            name = request.form["name"]
             email = request.form["email"]
             password = request.form["password"]
+            repeatPassword = request.form["repeat-password"]
+
+            if password != repeatPassword:
+                flash("Passwords does not match")
+                return redirect(request.url)
+
             encryptedPassword = generate_password_hash(password)
-            registeredDate = datetime.datetime.now()
 
             # Check if user already exists
             cursor = db.connection.cursor()
-            cursor.execute("SELECT * FROM usuarios WHERE correo = %s", [email])
+            cursor.execute("SELECT * FROM users WHERE username = %s", [email])
+
             user = cursor.fetchone()
             if user:
-                return "User already exists"
+                flash("User already exists")
+                return redirect(request.url)
 
             # Insert user info the database
             cursor.execute(
-                "INSERT INTO usuarios (nombre, correo, clave, fechareg) VALUES (%s, %s, %s, %s)",
-                (name, email, encryptedPassword, registeredDate),
+                "INSERT INTO users (username, password) VALUES (%s, %s)",
+                (email, encryptedPassword),
             )
 
             # Close the cursor and commit the changes
@@ -214,7 +223,6 @@ def api():
     }
 
 
-thePeoplesProyect.config.from_object(config["development"])
-
-if __name__ == "__main__":
+"""if __name__ == "__main__":
     thePeoplesProyect.run(port=3300)
+"""
