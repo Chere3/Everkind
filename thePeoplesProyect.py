@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, flash, redirect
 from flask_mysqldb import MySQL
-from flask_login import LoginManager, login_user, logout_user
+from flask_login import LoginManager, login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash
 from config import config
 from models.ModelUser import ModelUser
@@ -26,12 +26,22 @@ def load_user(id):
 
 @thePeoplesProyect.route("/")
 def home():
+    if current_user.is_authenticated:
+        if current_user.role_id == 2:
+            return render_template("admin/admin.html")
+        else:
+            if current_user.role_id == 1:
+                return redirect("/onboarding")
+            if current_user.role_id >= 3:
+                return render_template("dashboard.html")
     return render_template("home.html")
 
 
 # Auth routes
 @thePeoplesProyect.route("/auth/register", methods=["GET", "POST"])
 def signup():
+    if current_user.is_authenticated:
+        return redirect("/onboarding")
     if request.method == "POST":
         try:
             # Get the user info from the form
@@ -71,6 +81,20 @@ def signup():
             db.connection.commit()
             cursor.close()
 
+            user = ModelUser.signin(
+                db,
+                User(
+                    0,
+                    username,
+                    password,
+                    None,
+                    None,
+                    None,
+                ),
+            )
+
+            login_user(user)
+
             # Send to home page
             return render_template("home.html")
 
@@ -79,11 +103,23 @@ def signup():
             traceback.print_exc()
             return redirect(request.url)
 
-    return render_template("signup.html")
+    return render_template("auth/signup.html")
+
+
+@thePeoplesProyect.route("/onboarding", methods=["GET", "POST"])
+def complete_profile():
+    if not current_user.is_authenticated:
+        return redirect("/auth/login")
+    if request.method == "POST":
+        return render_template("auth/complete_profile.html")
+    else:
+        return render_template("auth/complete_profile.html")
 
 
 @thePeoplesProyect.route("/auth/login", methods=["GET", "POST"])
 def signin():
+    if current_user.is_authenticated:
+        return redirect("/onboarding")
     # Check if the request is a POST
     if request.method == "POST":
         try:
@@ -100,9 +136,12 @@ def signin():
                 if authUser.password:
                     # Check if the profile is admin or user
                     if authUser.role_id == 2:
-                        return render_template("admin.html")
+                        return render_template("admin/admin.html")
                     else:
-                        return render_template("user.html")
+                        if authUser.role_id == 1:
+                            return redirect("/onboarding")
+                        if authUser.role_id >= 3:
+                            return render_template("home.html")
                 else:
                     # Send a message if the username or password is incorrect
                     flash("Email or password incorrect")
@@ -116,7 +155,7 @@ def signin():
             traceback.print_exc()
             return redirect(request.url)
 
-    return render_template("signin.html")
+    return render_template("auth/signin.html")
 
 
 @thePeoplesProyect.route("/auth/logout")
@@ -128,11 +167,13 @@ def logout():
 
 @thePeoplesProyect.route("/admin/users", methods=["GET", "POST"])
 def users():
+    if current_user.role_id != 2:
+        return render_template("404.html")
     # Get all the users from the database
     u = ModelUser.get_all(db)
 
     # Send the users to the template
-    return render_template("users.html", users=u)
+    return render_template("admin/users.html", users=u)
 
 
 @thePeoplesProyect.route("/admin/users/create", methods=["GET", "POST"])
@@ -206,6 +247,11 @@ def api():
         "version": "1.0.0",
         "description": "A simple API for the people",
     }
+
+
+@thePeoplesProyect.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html"), 404
 
 
 if __name__ == "__main__":
