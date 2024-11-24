@@ -19,7 +19,7 @@
             <a class="nav-link active" aria-current="page" href="/`">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="/admin/users">Usuarios</a>
+            <a class="nav-link active" href="/admin/users">Users</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="#"></a>
@@ -46,7 +46,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for u in usuarios %}
+      {% for u in users %}
         <tr>
           <th scope="row">{{ u.0 }}</th>
           <td>{{ u.1 }}</td>
@@ -86,8 +86,8 @@
                     <select class="form-select" name="profile" id="form3Example5cg">
                       <option>Select an option</option>
                       <!-- - <option {% if u.5 == 'A' %} selected {% endif %} value="A">Admin</option> -->
-                      <!--                       <option {% if 
-                        u.5 == 'U' %} selected {% endif %} value="U">User</option>                       -->
+                      <!--                         <option {% if 
+                        u.5 == 'U' %} selected {% endif %} value="U">User</option>                         -->
                     </select>
                     <label class="form-label" for="form3Example5cg">Select your role</label>
                   </div>
