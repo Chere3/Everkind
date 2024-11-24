@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+{% block title %}
+  One more step
+{% endblock %}
+{% block content %}
+  <div>We need some more information to complete your profile</div>
+  <form action="/auth/complete-profile" method="post">
+    <div>
+      <label for="name">Name</label>
+      <input type="text" name="name" id="name" required />
+    </div>
+    <submit>Submit</submit>
+  </form>
+{% endblock %}
