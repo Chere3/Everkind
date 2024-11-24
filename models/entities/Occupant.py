@@ -9,6 +9,7 @@ class Occupant:
         created_at,
         updated_at,
         guest_id,
+        name,
     ) -> None:
         self.id = id
         self.user_id = user_id
@@ -18,3 +19,4 @@ class Occupant:
         self.created_at = created_at
         self.updated_at = updated_at
         self.guest_id = guest_id
+        self.name = name
