@@ -64,6 +64,23 @@ class ModelUser:
             # Fetch the result from the executed query
             user = cursor.fetchone()
             # Return the user object
+            print(id)
+            return User(user[0], user[1], user[2], user[3], user[4], user[5])
+        except Exception as ex:
+            # Raise an exception if any error occurs
+            raise Exception(ex)
+
+    @classmethod
+    def get_by_username(self, db, id):
+        try:
+            # Get the cursor from the database connection
+            cursor = db.connection.cursor()
+            # Execute the SQL query to retrieve a user by their ID from the users table
+            cursor.execute("SELECT * FROM users WHERE username = %s", (id,))
+            # Fetch the result from the executed query
+            user = cursor.fetchone()
+            # Return the user object
+            print(id)
             return User(user[0], user[1], user[2], user[3], user[4], user[5])
         except Exception as ex:
             # Raise an exception if any error occurs
