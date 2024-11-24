@@ -9,13 +9,14 @@ from models.entities.User import User
 import datetime
 import traceback
 
+
 # Create the app
 thePeoplesProyect = Flask(__name__)
-db = MySQL(thePeoplesProyect)
 
 # pythonAnywhere
 thePeoplesProyect.config.from_object(config["development"])
 adminSession = LoginManager(thePeoplesProyect)
+db = MySQL(thePeoplesProyect)
 
 
 @adminSession.user_loader
@@ -34,7 +35,7 @@ def signup():
     if request.method == "POST":
         try:
             # Get the user info from the form
-            email = request.form["email"]
+            username = request.form["username"]
             password = request.form["password"]
             repeatPassword = request.form["repeat-password"]
 
@@ -46,7 +47,7 @@ def signup():
 
             # Check if user already exists
             cursor = db.connection.cursor()
-            cursor.execute("SELECT * FROM users WHERE username = %s", [email])
+            cursor.execute("SELECT * FROM users WHERE username = %s", [username])
 
             user = cursor.fetchone()
             if user:
@@ -54,9 +55,16 @@ def signup():
                 return redirect(request.url)
 
             # Insert user info the database
-            cursor.execute(
-                "INSERT INTO users (username, password) VALUES (%s, %s)",
-                (email, encryptedPassword),
+            ModelUser.create(
+                db,
+                User(
+                    0,
+                    username,
+                    encryptedPassword,
+                    1,
+                    datetime.datetime.now(),
+                    datetime.datetime.now(),
+                ),
             )
 
             # Close the cursor and commit the changes
@@ -81,7 +89,7 @@ def signin():
         try:
             # Get the user info from the form
             user = User(
-                0, None, request.form["email"], request.form["clave"], None, None
+                0, request.form["username"], request.form["password"], None, None, None
             )
             # Get the user from the database
             authUser = ModelUser.signin(db, user)
@@ -89,14 +97,14 @@ def signin():
             # Check if the user exists
             if authUser is not None:
                 login_user(authUser)
-                if authUser.clave:
+                if authUser.password:
                     # Check if the profile is admin or user
-                    if authUser.perfil == "A":
+                    if authUser.role_id == 2:
                         return render_template("admin.html")
                     else:
                         return render_template("user.html")
                 else:
-                    # Send a message if the email or password is incorrect
+                    # Send a message if the username or password is incorrect
                     flash("Email or password incorrect")
                     return redirect(request.url)
             else:
@@ -121,36 +129,27 @@ def logout():
 @thePeoplesProyect.route("/admin/users", methods=["GET", "POST"])
 def users():
     # Get all the users from the database
-    users = db.connection.cursor()
-    users.execute("SELECT * FROM usuarios")
-    u = users.fetchall()
-    users.close()
+    u = ModelUser.get_all(db)
 
     # Send the users to the template
-    return render_template("users.html", usuarios=u)
+    return render_template("users.html", users=u)
 
 
 @thePeoplesProyect.route("/admin/users/create", methods=["GET", "POST"])
 def create_user():
     # Check if the request is a POST
-    passwordHash = generate_password_hash(request.form["password"])
-    date = datetime.datetime.now()
-
-    createUser = db.connection.cursor()
-
-    # Insert the user into the database
-    createUser.execute(
-        "INSERT INTO usuarios (nombre, correo, clave, fechareg, perfil) VALUES (%s, %s, %s, %s, %s)",
-        (
+    ModelUser.create(
+        db,
+        User(
+            0,
             request.form["name"],
-            request.form["email"],
-            passwordHash,
-            date,
+            request.form["username"],
+            request.form["password"],
             request.form["profile"],
+            None,
+            None,
         ),
     )
-
-    db.connection.commit()
     # Close the cursor
     flash("The user has been created successfully")
 
@@ -160,26 +159,21 @@ def create_user():
 @thePeoplesProyect.route("/admin/users/update/<int:id>", methods=["POST"])
 def update_user(id):
     try:
-        # Update the user in the database
-        cursor = db.connection.cursor()
-        # Execute the query
-        cursor.execute(
-            "UPDATE usuarios SET nombre = %s, correo = %s, clave = %s, perfil = %s WHERE id = %s",
-            (
-                request.form["name"],
-                request.form["email"],
-                generate_password_hash(request.form["password"]),
-                request.form["profile"],
+        ModelUser.update(
+            db,
+            User(
                 id,
+                request.form["name"],
+                request.form["username"],
+                request.form["password"],
+                request.form["profile"],
+                None,
+                None,
             ),
         )
 
-        db.connection.commit()
-        cursor.close()
-
         # Send a message to the user
         flash("The user has been updated successfully")
-
         return redirect("/admin/users")
     except Exception:
         # Send a message to the user saying that an error occurred
@@ -193,16 +187,7 @@ def update_user(id):
 @thePeoplesProyect.route("/admin/users/delete/<int:id>", methods=["POST"])
 def delete_user(id):
     try:
-        # Delete the user from the database
-        cursor = db.connection.cursor()
-        cursor.execute("DELETE FROM usuarios WHERE id = %s", [id])
-
-        db.connection.commit()
-        cursor.close()
-
-        # Send a message to the user
-        flash("The user has been deleted successfully")
-
+        ModelUser.delete(db, id)
         return redirect("/admin/users")
 
     except Exception:
@@ -223,6 +208,5 @@ def api():
     }
 
 
-"""if __name__ == "__main__":
+if __name__ == "__main__":
     thePeoplesProyect.run(port=3300)
-"""
