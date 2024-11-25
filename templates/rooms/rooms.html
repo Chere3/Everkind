@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% block title %}
+  Rooms
+{% endblock %}
+{% block body %}
+  <section class="d-flex flex-column align-items-center m-5 carrousel-block" id="rooms-layout__content">
+    <h2>Our rooms</h2>
+    <div class="d-flex flex-wrap justify-content-center">
+      <div class="card rounded-0 m-3" style="width: 18rem;">
+        <img src="https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top rounded-0" alt="suite" />
+        <div class="card-body">
+          <h5 class="card-title">Single room</h5>
+          <p class="card-text">Our single rooms are perfect for a single person. They come with a single bed, a desk, and a chair.</p>
+        </div>
+      </div>
+      <div class="card rounded-0 m-3" style="width: 18rem;">
+        <img src="https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top rounded-0" alt="suite" />
+        <div class="card-body">
+          <h5 class="card-title">Double room</h5>
+          <p class="card-text">Our double rooms are perfect for two people. They come with two single beds, a desk, and a chair.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

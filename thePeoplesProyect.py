@@ -183,7 +183,7 @@ def complete_profile():
                 db.connection.commit()
 
             # Send to home page
-            return render_template("home.html")
+            return redirect("/")
         except Exception:
             flash("An unexpected error occurred")
             traceback.print_exc()
@@ -240,6 +240,14 @@ def logout():
     logout_user()
     # Send to home page
     return redirect("/")
+
+@thePeoplesProyect.route("/rooms")
+def rooms():
+    return render_template("rooms/rooms.html")
+
+@thePeoplesProyect.route("/rooms/<int:id>")
+def room(id):
+    return render_template("rooms/room.html")
 
 
 @thePeoplesProyect.route("/admin/users", methods=["GET", "POST"])
