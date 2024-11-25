@@ -3,8 +3,14 @@ from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash
 from config import config
+
 from models.ModelUser import ModelUser
+from models.ModelOccupant import ModelOccupant
+from models.ModelGuest import ModelGuest
+
 from models.entities.User import User
+from models.entities.Occupant import Occupant
+from models.entities.Guest import Guest
 
 import datetime
 import traceback
@@ -33,8 +39,16 @@ def home():
             if current_user.role_id == 1:
                 return redirect("/onboarding")
             if current_user.role_id >= 3:
-                return render_template("dashboard.html")
+                return render_template("dashboards/dashboard.html")
     return render_template("home.html")
+
+
+@thePeoplesProyect.route("/home")
+def homepage():
+    if not current_user.is_authenticated:
+        return redirect("/")
+    else:
+        return render_template("home.html")
 
 
 # Auth routes
@@ -96,7 +110,7 @@ def signup():
             login_user(user)
 
             # Send to home page
-            return render_template("home.html")
+            return redirect("/")
 
         except Exception:
             flash("An unexpected error occurred")
@@ -110,8 +124,71 @@ def signup():
 def complete_profile():
     if not current_user.is_authenticated:
         return redirect("/auth/login")
+
+    if current_user.role_id >= 3:
+        return redirect("/")
+
     if request.method == "POST":
-        return render_template("auth/complete_profile.html")
+        try:
+            # Get the user info from the form
+            firstName = request.form["first-name"]
+            lastName = request.form["last-name"]
+            userTypeId = request.form["user-type"]
+
+            if userTypeId == "3":
+                userTypeId = 3
+            elif userTypeId == "4":
+                userTypeId = 4
+
+            # Insert user info the database
+            ModelUser.update(
+                db,
+                User(
+                    current_user.id,
+                    current_user.username,
+                    current_user.password,
+                    userTypeId,
+                    datetime.datetime.now(),
+                    datetime.datetime.now(),
+                ),
+            )
+
+            if userTypeId == 4:
+                ModelOccupant.create(
+                    db,
+                    Occupant(
+                        0,
+                        current_user.id,
+                        None,
+                        None,
+                        None,
+                        datetime.datetime.now(),
+                        datetime.datetime.now(),
+                        None,
+                        firstName + " " + lastName,
+                    ),
+                )
+                db.connection.commit()
+            elif userTypeId == 3:
+                ModelGuest.create(
+                    db,
+                    Guest(
+                        0,
+                        firstName + " " + lastName,
+                        None,
+                        datetime.datetime.now(),
+                        datetime.datetime.now(),
+                    ),
+                )
+                db.connection.commit()
+
+            # Send to home page
+            return render_template("home.html")
+        except Exception:
+            flash("An unexpected error occurred")
+            traceback.print_exc()
+            return redirect(request.url)
+
     else:
         return render_template("auth/complete_profile.html")
 
@@ -141,7 +218,7 @@ def signin():
                         if authUser.role_id == 1:
                             return redirect("/onboarding")
                         if authUser.role_id >= 3:
-                            return render_template("home.html")
+                            return redirect("/")
                 else:
                     # Send a message if the username or password is incorrect
                     flash("Email or password incorrect")
@@ -162,7 +239,7 @@ def signin():
 def logout():
     logout_user()
     # Send to home page
-    return render_template("home.html")
+    return redirect("/")
 
 
 @thePeoplesProyect.route("/admin/users", methods=["GET", "POST"])
