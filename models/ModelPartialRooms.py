@@ -20,8 +20,9 @@ class ModelPartialRooms:
             cursor = db.connection.cursor()
             # Execute the SQL query to insert a new room into the rooms table
             cursor.execute(
-                "INSERT INTO rooms (room_number, capacity, room_type_id, room_type_photo) VALUES (%s, %s, %s, %s)",
+                "INSERT INTO rooms (name, room_number, capacity, room_type_id, room_type_photo) VALUES (%s, %s, %s, %s, %s)",
                 (
+                    room.name,
                     room.room_number,
                     room.capacity,
                     room.room_type_id,
@@ -71,8 +72,9 @@ class ModelPartialRooms:
             cursor = db.connection.cursor()
             # Execute the SQL query to update an existing room in the rooms table
             cursor.execute(
-                "UPDATE rooms SET room_number = %s, capacity = %s, room_type_id = %s, room_type_photo = %s WHERE id = %s",
+                "UPDATE rooms SET name = %s, room_number = %s, capacity = %s, room_type_id = %s, room_type_photo = %s WHERE id = %s",
                 (
+                    room.name,
                     room.room_number,
                     room.capacity,
                     room.room_type_id,
@@ -80,6 +82,19 @@ class ModelPartialRooms:
                     room.id,
                 ),
             )
+            # Commit the transaction to save the changes in the database
+            db.connection.commit()
+        except Exception as ex:
+            # Raise an exception if any error occurs
+            raise Exception(ex)
+
+    @classmethod
+    def delete(self, db, room_id):
+        try:
+            # Get the cursor from the database connection
+            cursor = db.connection.cursor()
+            # Execute the SQL query to delete a room by its ID from the rooms table
+            cursor.execute("DELETE FROM rooms WHERE id = %s", (room_id,))
             # Commit the transaction to save the changes in the database
             db.connection.commit()
         except Exception as ex:

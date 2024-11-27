@@ -1,7 +1,6 @@
 {% extends 'basic.html' %}
 {% block content %}
   <body>
-    <script src="{{ url_for('static', filename='/js/bootstrap.bundle.min.js') }}"></script>
     <nav class="navbar navbar-expand-lg">
       <div class="container-fluid">
         <a class="navbar-brand fw-bold" style="font-family: var(--heading-font)" href="/"><i class="fa-solid fa-people-roof"></i> The Peoples Proyect</a>
@@ -21,7 +20,7 @@
         </div>
         {% if current_user.is_authenticated %}
           <div class="d-flex gap-2">
-            <a class="btn btn-outline" href="/auth/login">My account</a>
+            <a class="btn btn-outline" href="/">My account</a>
             <a class="btn btn-primary" href="/auth/logout">Sign out</a>
           </div>
         {% else %}

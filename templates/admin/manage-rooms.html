@@ -39,28 +39,34 @@
     <thead>
       <tr>
         <th scope="col">ID</th>
-        <th scope="col">Username</th>
-        <th scope="col">Profile ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Room Number</th>
+        <th scope="col">Capacity</th>
         <th scope="col">Created at</th>
         <th scope="col">Updated at</th>
+        <th scope="col">Room type id</th>
+        <th scope="col">Room type photo</th>
         <th scope="col" colspan="2">
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert"><i class="fa-solid fa-user-plus"></i></button>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert"><i class="fa-solid fa-plus"></i></button>
         </th>
       </tr>
     </thead>
     <tbody>
-      {% for u in users %}
+      {% for u in rooms %}
         <tr>
           <th scope="row">{{ u.0 }}</th>
           <td>{{ u.1 }}</td>
+          <td>{{ u.2 }}</td>
           <td>{{ u.3 }}</td>
           <td>{{ u.4 }}</td>
           <td>{{ u.5 }}</td>
+          <td>{{ u.6 }}</td>
+          <td>{{ u.7 }}</td>
           <td>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update{{ u.0 }}"><i class="fa-solid fa-user-pen"></i></button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update{{ u.0 }}"><i class="fa-solid fa-pen-to-square"></i></button>
           </td>
           <td>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#delete{{ u.0 }}"><i class="fa-solid fa-user-minus"></i></button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#delete{{ u.0 }}"><i class="fa-solid fa-minus"></i></button>
           </td>
         </tr>
         <!-- Modal update -->
@@ -68,33 +74,35 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Update room</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <form action="/admin/users/update/{{ u.0 }}" method="post">
+              <form action="/admin/room/update/{{ u.0 }}" method="post">
                 <div class="modal-body">
                   <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="text" name="username" id="form3Example1cg" value="{{ u.1 }}" class="form-control form-control-lg" />
-                    <label class="form-label" for="form3Example1cg">username</label>
+                    <input type="text" name="name" id="form3Example1cg" value="{{ u.1 }}" class="form-control form-control-lg" />
+                    <label class="form-label" for="form3Example1cg">Name</label>
                   </div>
                   <div data-mdb-input-init class="form-outline mb-4">
-                    <input type="password" name="password" id="form3Example3cg" value="{{ u.2 }}" class="form-control form-control-lg" />
-                    <label class="form-label" for="form3Example3cg">password</label>
+                    <input type="text" name="number" id="form3Example4cg" value="{{ u.2 }}" class="form-control form-control-lg" />
+                    <label class="form-label" for="form3Example4cg">Room number</label>
                   </div>
                   <div data-mdb-input-init class="form-outline mb-4">
-                    <select class="form-select" name="role-id" id="form3Example5cg">
-                      <option>Select an option</option>
-                       <option {% if u.3 == '1' %} selected {% endif %} value="1">User</option> 
-                       <option {% if u.3 == '2' %} selected {% endif %} value="2">Admin</option>
-                       <option {% if u.3 == '3' %} selected {% endif %} value="3">Guest</option>
-                       <option {% if u.3 == '4' %} selected {% endif %} value="4">Occupant</option>                                       
-                    </select>
-                    <label class="form-label" for="form3Example5cg">Select your role</label>
+                    <input type="text" name="capacity" id="form3Example4cg" value="{{ u.3 }}" class="form-control form-control-lg" />
+                    <label class="form-label" for="form3Example4cg">Capacity</label>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <input type="text" name="room-type-id" id="form3Example4cg" value="{{ u.6 }}" class="form-control form-control-lg" />
+                    <label class="form-label" for="form3Example4cg">Room type id</label>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <input type="text" name="room-type-photo" id="form3Example4cg" value="{{ u.7 }}" class="form-control form-control-lg" />
+                    <label class="form-label" for="form3Example4cg">Room type photo</label>
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
-                  <button type="submit" class="btn btn-primary">Edit user</button>
+                  <button type="submit" class="btn btn-primary">Edit room</button>
                 </div>
               </form>
             </div>
@@ -108,9 +116,9 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Delete uer</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body">Are you sure to delete the user with the ID: {{ u.0 }} ?</div>
+              <div class="modal-body">Are you sure to delete the room with the ID: {{ u.0 }} ?</div>
               <div class="modal-footer">
-                <form action="/admin/users/delete/{{ u.0 }}" method="post">
+                <form action="/admin/room/delete/{{ u.0 }}" method="post">
                   <button type="button" class="btn btn-outline" data-bs-dismiss="modal">No</button>
                   <button type="submit" class="btn btn-primary">Yes</button>
                 </form>
@@ -126,32 +134,35 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Insert new user</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Insert new room</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="/admin/users/create" method="post">
+        <form action="/admin/room/create" method="post">
           <div class="modal-body">
             <div data-mdb-input-init class="form-outline mb-4">
-              <input type="text" name="username" id="form3Example1cg" class="form-control form-control-lg" />
-              <label class="form-label" for="form3Example1cg">username</label>
+              <input type="text" name="name" id="form3Example1cg" class="form-control form-control-lg" />
+              <label class="form-label" for="form3Example1cg">Name</label>
             </div>
             <div data-mdb-input-init class="form-outline mb-4">
-              <input type="password" name="password" id="form3Example4cg" class="form-control form-control-lg" />
-              <label class="form-label" for="form3Example4cg">Password</label>
+              <input type="text" name="number" id="form3Example4cg" class="form-control form-control-lg" />
+              <label class="form-label" for="form3Example4cg">Room number</label>
             </div>
             <div data-mdb-input-init class="form-outline mb-4">
-              <select class="form-select" name="role-id" id="form3Example5cg">
-                <option value="1">User</option> 
-                <option value="2">Admin</option>
-                <option value="3">Guest</option>
-                <option value="4">Occupant</option> 
-              </select>
-              <label class="form-label" for="form3Example5cg">Select your role</label>
+              <input type="text" name="capacity" id="form3Example4cg" class="form-control form-control-lg" />
+              <label class="form-label" for="form3Example4cg">Capacity</label>
+            </div>
+            <div data-mdb-input-init class="form-outline mb-4">
+              <input type="text" name="room-type-id" id="form3Example4cg" class="form-control form-control-lg" />
+              <label class="form-label" for="form3Example4cg">Room type id</label>
+            </div>
+            <div data-mdb-input-init class="form-outline mb-4">
+              <input type="text" name="room-type-photo" id="form3Example4cg" class="form-control form-control-lg" />
+              <label class="form-label" for="form3Example4cg">Room type photo</label>
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary">Create user</button>
+            <button type="submit" class="btn btn-primary">Create room</button>
           </div>
         </form>
       </div>

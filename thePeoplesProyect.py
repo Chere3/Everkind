@@ -12,6 +12,8 @@ from models.ModelGuest import ModelGuest
 from models.ModelPartialRooms import ModelPartialRooms
 from models.ModelRoom import ModelRoom
 
+from models.entities import Room
+from models.entities.PartialRoom import PartialRoom
 from models.entities.User import User
 from models.entities.Occupant import Occupant
 from models.entities.Guest import Guest
@@ -42,7 +44,8 @@ def load_user(id):
 def home():
     if current_user.is_authenticated:
         if current_user.role_id == 2:
-            return render_template("admin/admin.html")
+            orders = ModelOrderHistory.get_all(db)
+            return render_template("admin/admin.html", user=current_user, orders=orders)
         else:
             if current_user.role_id == 1:
                 return redirect("/onboarding")
@@ -274,6 +277,103 @@ def rooms():
     return render_template("rooms/rooms.html", rooms=rooms)
 
 
+@thePeoplesProyect.route("/admin/room/create", methods=["GET", "POST"])
+def create_room():
+    if current_user.role_id != 2:
+        return render_template("404.html")
+    if request.method == "POST":
+        try:
+            # Get the room info from the form
+            name = request.form["name"]
+            roomNumber = request.form["number"]
+            capacity = request.form["capacity"]
+            roomTypeId = request.form["room-type-id"]
+            roomTypePhoto = request.form["room-type-photo"]
+
+            ModelPartialRooms.create(
+                db,
+                PartialRoom(
+                    0,
+                    name,
+                    roomNumber,
+                    capacity,
+                    datetime.datetime.now(),
+                    datetime.datetime.now(),
+                    roomTypeId,
+                    roomTypePhoto,
+                ),
+            ),
+
+            # Send a message to the user
+            flash("The room has been created successfully")
+
+            # Send to home page
+            return redirect("/")
+
+        except Exception:
+            flash("An unexpected error occurred")
+            traceback.print_exc()
+            return redirect(request.url)
+
+    return render_template("admin/create-room.html")
+
+
+@thePeoplesProyect.route("/admin/room/update/<int:id>", methods=["GET", "POST"])
+def update_room(id):
+    if current_user.role_id != 2:
+        return render_template("404.html")
+    if request.method == "POST":
+        try:
+            # Get the room info from the form
+            name = request.form["name"]
+            roomNumber = request.form["number"]
+            capacity = request.form["capacity"]
+            roomTypeId = request.form["room-type-id"]
+            roomTypePhoto = request.form["room-type-photo"]
+
+            ModelPartialRooms.update(
+                db,
+                PartialRoom(
+                    id,
+                    name,
+                    roomNumber,
+                    capacity,
+                    datetime.datetime.now(),
+                    datetime.datetime.now(),
+                    roomTypeId,
+                    roomTypePhoto,
+                ),
+            )
+
+            # Send a message to the user
+            flash("The room has been updated successfully")
+
+            # Send to home page
+            return redirect("/")
+
+        except Exception:
+            flash("An unexpected error occurred")
+            traceback.print_exc()
+            return redirect(request.url)
+
+    room = ModelPartialRooms.get_by_id(db, id)
+    return render_template("admin/update-room.html", room=room)
+
+
+@thePeoplesProyect.route("/admin/room/delete/<int:id>", methods=["POST"])
+def delete_room(id):
+    if current_user.role_id != 2:
+        return render_template("404.html")
+    try:
+        ModelPartialRooms.delete(db, id)
+        return redirect("/")
+
+    except Exception:
+        flash("An unexpected error occurred")
+        traceback.print_exc()
+        return redirect("/")
+
+
 @thePeoplesProyect.route("/rooms/<int:id>")
 def room(id):
     room = ModelRoom.get_by_id(db, id)
@@ -320,6 +420,11 @@ def cancel_room(id):
 def manage_rooms():
     if not current_user.is_authenticated:
         return redirect("/auth/login")
+
+    if current_user.role_id == 2:
+        rooms = ModelRoom.get_all(db)
+        return render_template("admin/manage-rooms.html", rooms=rooms)
+
     if current_user.role_id < 3:
         return render_template("404.html")
     rooms = ModelRoom.get_by_user_id(db, current_user.id)
@@ -330,6 +435,11 @@ def manage_rooms():
 def orders():
     if not current_user.is_authenticated:
         return redirect("/auth/login")
+
+    if current_user.role_id == 2:
+        orders = ModelOrderHistory.get_all(db)
+        return render_template("admin/orders.html", orders=orders)
+
     orders = ModelOrderHistory.get_by_user_id(db, current_user.id)
     return render_template("dashboards/orders.html", orders=orders)
 
@@ -352,12 +462,11 @@ def create_user():
         db,
         User(
             0,
-            request.form["name"],
             request.form["username"],
             request.form["password"],
-            request.form["profile"],
-            None,
-            None,
+            request.form["role-id"],
+            datetime.datetime.now(),
+            datetime.datetime.now(),
         ),
     )
     # Close the cursor
@@ -373,12 +482,11 @@ def update_user(id):
             db,
             User(
                 id,
-                request.form["name"],
                 request.form["username"],
                 request.form["password"],
-                request.form["profile"],
+                request.form["role-id"],
                 None,
-                None,
+                datetime.datetime.now(),
             ),
         )
 

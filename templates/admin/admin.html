@@ -10,10 +10,13 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/`">Home</a>
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="/admin/users">Users</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/rooms/manage">Rooms/Products</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" href="#"></a>
@@ -22,8 +25,36 @@
       </div>
       <div class="d-flex gap-2">
         <a class="btn btn-outline">{{ current_user.username }}</a>
-        <a class="btn btn-primary" href="/auth/signout">Sign out</a>
+        <a class="btn btn-primary" href="/auth/logout">Logout</a>
       </div>
     </div>
   </nav>
+  <section class="d-flex container-fluid flex-column align-items-start justify-content-start" style="height: 100vh;">
+    <span class="mb-5">
+      <h1 class="display-3 fw-bold" style="font-family: var(--heading-font);">Hi, {{ user.username }}</h1>
+      <h3>Welcome to your dashboard</h3>
+    </span>
+    <a class="card text-decoration-none card-dashboard" href="/orders" style="width: 100%">
+      <div class="card-body align-items-start">
+        <h1 class="card-title" style="font-family: var(--heading-font);">We have {{ orders|length }} orders in total</h1>
+        <p class="card-text">View all total orders</p>
+      </div>
+    </a>
+    <div class="d-flex gap-3 w-100 my-3">
+      <a class="card text-decoration-none card-dashboard" href="/admin/users" style="width: 100%; height: 100%;">
+        <img src="https://brandeps.com/icon-download/P/Person-circle-icon-01.png" class="d-block align-self-center m-2" alt="..." style="max-width: 35%; filter: brightness(0) saturate(100%) invert(31%) sepia(65%) saturate(1771%) hue-rotate(345deg) brightness(103%) contrast(89%);" />
+        <div class="card-body align-items-start">
+          <h1 class="card-title" style="font-family: var(--heading-font);">Accounts</h1>
+          <p class="card-text">View and manage accounts</p>
+        </div>
+      </a>
+      <a class="card text-decoration-none card-dashboard" href="/rooms/manage" style="width: 100%; height: 100%;">
+        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/big-size-bed-room-3d-icon-download-in-png-blend-fbx-gltf-file-formats--furniture-bedroom-double-isometric-pack-interiors-icons-5251978.png?f=webp" class="d-block align-self-center" alt="..." style="max-width: 40%;" />
+        <div class="card-body align-items-start">
+          <h1 class="card-title" style="font-family: var(--heading-font);">Manage global rooms</h1>
+          <p class="card-text">View and manage the rooms</p>
+        </div>
+      </a>
+    </div>
+  </section>
 {% endblock %}
