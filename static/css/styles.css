@@ -2,6 +2,8 @@
   --primary-font: "Montserrat", sans-serif;
   --heading-font: "Domine", serif;
 
+  --display-size: calc(50px + 56 * ((100vw - 768px) / 1152));
+  --display-size-small: calc(30px + 56 * ((100vw - 768px) / 1152));
   --font-color: #020202;
 
   --site-bg: #f1ede7;
@@ -20,7 +22,7 @@ input {
 
 .carousel {
   max-height: 50vh !important;
-  max-width: 46% !important;
+  max-width: 90% !important;
 }
 
 .btn-primary {
@@ -58,6 +60,12 @@ input {
   color: #c34225;
 }
 
+.card-dashboard:hover {
+  /* Color transition */
+  transition: 0.1s;
+  background-color: #dddddd;
+}
+
 /* Add arrow animation */
 #arrow_forward {
   animation: forward-loop 2s infinite;
@@ -74,5 +82,47 @@ input {
 
   100% {
     transform: translateX(0);
+  }
+}
+
+#black-filter {
+  filter: brightness(0.5);
+}
+
+/* Modern scrollbar with support for firefox */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1ede7;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e74e2c;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #c34225;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: 10px;
+  scrollbar-color: #e74e2c #f1ede7;
+}
+
+#home-layout__banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10%;
+}
+
+/* media queries */
+@media (max-width: 768px) {
+  #home-layout__banner {
+    flex-direction: column;
+    align-items: center;
   }
 }

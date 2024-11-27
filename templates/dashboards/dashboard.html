@@ -3,8 +3,32 @@
   Dashboard
 {% endblock %}
 {% block body %}
-  <section class="d-flex flex-column align-items-center justify-content-center" style="height: 100vh;">
-    <h1 style="font-family: var(--heading-font); font-size: 3rem;">Welcome to the dashboard</h1>
-    <p>Here you can manage your account and your data</p>
+  <section class="d-flex container-fluid flex-column align-items-start justify-content-start" style="height: 100vh;">
+    <span class="mb-5">
+      <h1 class="display-3 fw-bold" style="font-family: var(--heading-font);">Hi, {{ user.8.split(' ').0 }}</h1>
+      <h3>Welcome to your dashboard</h3>
+    </span>
+    <a class="card text-decoration-none card-dashboard" href="/orders" style="width: 100%">
+      <div class="card-body align-items-start">
+        <h1 class="card-title" style="font-family: var(--heading-font);">You have {{ orders|length }} orders associated with your account</h1>
+        <p class="card-text">View your orders</p>
+      </div>
+    </a>
+    <div class="d-flex gap-3 w-100 my-3">
+      <a class="card text-decoration-none card-dashboard" href="/account" style="width: 100%; height: 100%;">
+        <img src="https://brandeps.com/icon-download/P/Person-circle-icon-01.png" class="d-block align-self-center m-2" alt="..." style="max-width: 35%; filter: brightness(0) saturate(100%) invert(31%) sepia(65%) saturate(1771%) hue-rotate(345deg) brightness(103%) contrast(89%);" />
+        <div class="card-body align-items-start">
+          <h1 class="card-title" style="font-family: var(--heading-font);">Your account</h1>
+          <p class="card-text">View and manage your account</p>
+        </div>
+      </a>
+      <a class="card text-decoration-none card-dashboard" href="/rooms/manage" style="width: 100%; height: 100%;">
+        <img src="https://cdn3d.iconscout.com/3d/premium/thumb/big-size-bed-room-3d-icon-download-in-png-blend-fbx-gltf-file-formats--furniture-bedroom-double-isometric-pack-interiors-icons-5251978.png?f=webp" class="d-block align-self-center" alt="..." style="max-width: 40%;" />
+        <div class="card-body align-items-start">
+          <h1 class="card-title" style="font-family: var(--heading-font);">Your rooms</h1>
+          <p class="card-text">View and manage your rooms</p>
+        </div>
+      </a>
+    </div>
   </section>
 {% endblock %}

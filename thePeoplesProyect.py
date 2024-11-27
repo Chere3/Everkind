@@ -3,14 +3,19 @@ from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user, logout_user, current_user
 from werkzeug.security import generate_password_hash
 from config import config
+from flask_mail import Mail, Message
 
+from models.ModelOrderHistory import ModelOrderHistory
 from models.ModelUser import ModelUser
 from models.ModelOccupant import ModelOccupant
 from models.ModelGuest import ModelGuest
+from models.ModelPartialRooms import ModelPartialRooms
+from models.ModelRoom import ModelRoom
 
 from models.entities.User import User
 from models.entities.Occupant import Occupant
 from models.entities.Guest import Guest
+
 
 import datetime
 import traceback
@@ -19,10 +24,13 @@ import traceback
 # Create the app
 thePeoplesProyect = Flask(__name__)
 
-# pythonAnywhere
 thePeoplesProyect.config.from_object(config["development"])
+thePeoplesProyect.config.from_object(config["mail"])
+
+# pythonAnywhere
 adminSession = LoginManager(thePeoplesProyect)
 db = MySQL(thePeoplesProyect)
+mail = Mail(thePeoplesProyect)
 
 
 @adminSession.user_loader
@@ -39,7 +47,12 @@ def home():
             if current_user.role_id == 1:
                 return redirect("/onboarding")
             if current_user.role_id >= 3:
-                return render_template("dashboards/dashboard.html")
+                user = ModelOccupant.get_by_user_id(db, current_user.id)
+                orders = ModelOrderHistory.get_by_user_id(db, current_user.id)
+
+                return render_template(
+                    "dashboards/dashboard.html", user=user[0], orders=orders
+                )
     return render_template("home.html")
 
 
@@ -106,6 +119,15 @@ def signup():
                     None,
                 ),
             )
+
+            # Send a message to the user
+            message = Message(
+                "Welcome to the People's Project",
+                recipients=[user.username],
+            )
+
+            message.html = render_template("mails/register.html", user=user)
+            mail.send(message)
 
             login_user(user)
 
@@ -241,13 +263,75 @@ def logout():
     # Send to home page
     return redirect("/")
 
+
 @thePeoplesProyect.route("/rooms")
 def rooms():
-    return render_template("rooms/rooms.html")
+    rooms = ModelRoom.get_all(db)
+    # Convert tuple to array
+    rooms = [list(i) for i in rooms]
+    # Sort the array by room number
+    rooms.sort(key=lambda x: int(x[2]))
+    return render_template("rooms/rooms.html", rooms=rooms)
+
 
 @thePeoplesProyect.route("/rooms/<int:id>")
 def room(id):
-    return render_template("rooms/room.html")
+    room = ModelRoom.get_by_id(db, id)
+    return render_template("rooms/room.html", room=room)
+
+
+@thePeoplesProyect.route("/rooms/<int:id>/book")
+def book_room(id):
+    if not current_user.is_authenticated:
+        return redirect("/auth/login")
+    user_id = current_user.id
+    order_date = datetime.datetime.now()
+    status = 1
+
+    try:
+        ModelRoom.book_room(db, id, user_id, order_date, status)
+        flash("Room booked successfully")
+        return redirect("/")
+    except Exception:
+        flash("An unexpected error occurred")
+        traceback.print_exc()
+        return redirect("/")
+
+
+@thePeoplesProyect.route("/rooms/<int:id>/cancel")
+def cancel_room(id):
+    if not current_user.is_authenticated:
+        return redirect("/auth/login")
+    user_id = current_user.id
+    order_date = datetime.datetime.now()
+    status = 0
+
+    try:
+        ModelRoom.cancel_room(db, id, user_id, order_date, status)
+        flash("Room canceled successfully")
+        return redirect("/")
+    except Exception:
+        flash("An unexpected error occurred")
+        traceback.print_exc()
+        return redirect("/")
+
+
+@thePeoplesProyect.route("/rooms/manage")
+def manage_rooms():
+    if not current_user.is_authenticated:
+        return redirect("/auth/login")
+    if current_user.role_id < 3:
+        return render_template("404.html")
+    rooms = ModelRoom.get_by_user_id(db, current_user.id)
+    return render_template("rooms/manage.html", rooms=rooms)
+
+
+@thePeoplesProyect.route("/orders")
+def orders():
+    if not current_user.is_authenticated:
+        return redirect("/auth/login")
+    orders = ModelOrderHistory.get_by_user_id(db, current_user.id)
+    return render_template("dashboards/orders.html", orders=orders)
 
 
 @thePeoplesProyect.route("/admin/users", methods=["GET", "POST"])
@@ -337,6 +421,11 @@ def api():
 @thePeoplesProyect.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
+
+
+@thePeoplesProyect.errorhandler(500)
+def internal_server_error(e):
+    return render_template("500.html"), 500
 
 
 if __name__ == "__main__":

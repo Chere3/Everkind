@@ -3,23 +3,27 @@
   Rooms
 {% endblock %}
 {% block body %}
-  <section class="d-flex flex-column align-items-center m-5 carrousel-block" id="rooms-layout__content">
-    <h2>Our rooms</h2>
-    <div class="d-flex flex-wrap justify-content-center">
-      <div class="card rounded-0 m-3" style="width: 18rem;">
-        <img src="https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top rounded-0" alt="suite" />
-        <div class="card-body">
-          <h5 class="card-title">Single room</h5>
-          <p class="card-text">Our single rooms are perfect for a single person. They come with a single bed, a desk, and a chair.</p>
+  <section class="container-fluid w-full" id="rooms-layout__content">
+    <div class="position-relative">
+      <!-- Banner with a background image and title in the center of the image -->
+      <img src="https://images.pexels.com/photos/16648047/pexels-photo-16648047/free-photo-of-interior-design-of-living-room.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="d-block" alt="..." style="object-fit: cover; width: 100%; height: 40vh;" id="black-filter" />
+      <span class="position-absolute top-50 start-50 translate-middle text-white d-flex flex-column text-center"><h1 style="font-family: var(--heading-font); font-size: 60px;">Our rooms</h1><p>We offer a variety of rooms for you to choose from. You can choose from a single room, a double room, or a suite.</p></span>
+    </div>
+    <div class="d-grid w-full gap-2 my-5" style="grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));">
+      {% for room in rooms %}
+        <div class="card rounded-0">
+          <div class="rounded-0 card-img image{{ room.3 }} w-full position-relative" style="background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(0,0,0, 0.80) 100%), url({{ room.11 }}); background-size: cover; background-position: center; height: 200px;" alt="{{ room.name }}">
+            <h2 class="position-absolute start-50 translate-middle text-white" style="font-family: var(--heading-font); top: 90%;">#{{ room.2 }}</h2>
+          </div>
+          <div class="card-body bg-white">
+            <h5 class="card-title">{{ room.1 }}</h5>
+            <h6 class="card-text">Capacity: <i class="fa-solid fa-people-group"></i> {{ room.3 }} - {{ room.9 }}</h6>
+            <p class="card-text">{{ room.10 }}</p>
+
+            <a href="/rooms/{{ room.0 }}" class="btn btn-primary">Go to room</a>
+          </div>
         </div>
-      </div>
-      <div class="card rounded-0 m-3" style="width: 18rem;">
-        <img src="https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top rounded-0" alt="suite" />
-        <div class="card-body">
-          <h5 class="card-title">Double room</h5>
-          <p class="card-text">Our double rooms are perfect for two people. They come with two single beds, a desk, and a chair.</p>
-        </div>
-      </div>
+      {% endfor %}
     </div>
   </section>
 {% endblock %}

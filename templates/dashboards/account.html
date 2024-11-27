@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block title %}
+  Account
+{% endblock %}
+{% block body %}
+  <!-- Show inputs with the account info and put a button to change parameters -->
+  <section class="d-flex container-fluid flex-column align-items-start justify-content-start" style="height: 100vh;">
+    <div>
+      <fieldset class="w-100">
+        <label for="username">Username</label>
+        <input class="form-control form-control-lg w-100 rounded-0" type="text" name="username" id="username" value="{{ user.8 }}" required />
+      </fieldset>
+      <fieldset class="w-100">
+        <label for="email">Email</label>
+        <input class="form-control form-control-lg w-100 rounded-0" type="email" name="email" id="email" value="{{ user.7 }}" required />
+      </fieldset>
+      <fieldset class="w-100">
+        <label for="password">Password</label>
+        <input class="form-control form-control-lg w-100 rounded-0" type="password" name="password" id="password" value="{{ user.9 }}" required />
+      </fieldset>
+      <button class="btn btn-primary btn-lg" type="submit">Submit Changes</button>
+    </div>
+  </section>
+{% endblock %}

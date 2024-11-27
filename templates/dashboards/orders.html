@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% block title %}
+  Orders
+{% endblock %}
+{% block body %}
+  <!-- Make a rounded table -->
+  <div class="container-fluid w-full">
+    <table class="table table-striped table-hover table-bordered rounded-5">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Your user ID</th>
+          <th>Your occupant ID</th>
+          <th>The visit ID</th>
+          <th>Room Order ID</th>
+          <th>The move ID</th>
+          <th>Action Date</th>
+          <th>Created at</th>
+          <th>Updated at</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+          <tr>
+            <td>{{ order.0 }}</td>
+            <td>{{ order.1 }}</td>
+            <td>{{ order.2 }}</td>
+            <td>{{ order.3 }}</td>
+            <td>{{ order.4 }}</td>
+            <td>{{ order.5 }}</td>
+            <td>{{ order.6 }}</td>
+            <td>{{ order.7 }}</td>
+            <td>{{ order.8 }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

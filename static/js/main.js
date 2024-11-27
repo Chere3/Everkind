@@ -49,9 +49,8 @@ function setHomeLayoutHeight(windowHeight, windowWidth) {
 
     if (!homeLayout || !homeContent) return;
 
-    if (windowWidth > 768) {
+    if (windowWidth > 768 && windowHeight > 600) {
         homeLayout.style.height = `${windowHeight - 190}px`;
-        homeContent.style.height = `${windowHeight - 190}px`;
     } else {
         homeLayout.style.height = 'auto';
         homeContent.style.height = 'auto';
@@ -62,12 +61,12 @@ function setHomeLayoutHeight(windowHeight, windowWidth) {
 // Invoke the function to set the height of the auth layout.
 const { width, height } = getScreenSize();
 setAuthLayoutHeight(height, width);
-setHomeLayoutHeight(height, width);
+
 
 
 // Invoke the function when window resize.
 window.addEventListener('resize', (e) => {
     const { width, height } = getScreenSize();
     setAuthLayoutHeight(height, width);
-    setHomeLayoutHeight(height, width);
+
 })

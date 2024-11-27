@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+{% block title %}
+  {{ room.1 }}
+{% endblock %}
+{% block body %}
+  <!-- The page divided in two, the image and the information of the product with an button of 'book now' ! -->
+  <section class="d-flex w-full gap-5" id="room-layout__content">
+    <div class="d-flex flex-column m-4">
+      <div class="d-flex flex-column align-items-start justify-content-center gap-3">
+        <h1 class="fw-bold" style="font-family: var(--heading-font); font-size: 60px;">{{ room.1 }}</h1>
+        <p>{{ room.10 }}</p>
+        <h6>Capacity: <i class="fa-solid fa-people-group"></i> {{ room.3 }} - {{ room.9 }}</h6>
+        <a href="/rooms/{{ room.0 }}/book" class="btn btn-primary">Book now</a>
+      </div>
+    </div>
+    <img src="{{ room.11 }}" class="d-block" alt="{{ room.1 }}" style="object-fit: cover; width: 100%; height: 100%;" />
+  </section>
+{% endblock %}
