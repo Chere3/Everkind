@@ -13,7 +13,7 @@ class DevelopmentConfig(Config):
     """
 
     # pythonanywhere
-    MYSQL_HOST = "thepeoplesproyect.mysql.pythonanywhethepeopleproyectre-services.com"
+    MYSQL_HOST = "thepeoplesproyect.mysql.pythonanywhere-services.com"
     MYSQL_USER = "thepeoplesproyec"
     MYSQL_PASSWORD = "ucw8kgn6unt4znz@MVY"
     MYSQL_DB = "thepeoplesproyec$thepeoplesproyect"
