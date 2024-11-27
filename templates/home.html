@@ -3,7 +3,7 @@
   The Peoples Proyect
 {% endblock %}
 {% block body %}
-  <section class="d-flex container-fluid align-content-center mb-5" id="home-layout__banner">
+  <section class="d-flex container-fluid align-content-center" id="home-layout__banner" style="margin-bottom: 20%;">
     <span>
       <h1 class="p-3 fw-bold" style="font-family: var(--heading-font); font-size: var(--display-size);">Changing the lives of older people</h1>
       <button class="btn d-flex px-3 display-2" href="/mission" style="text-decoration: none;">See how <span class="material-symbols-sharp" id="arrow_forward">arrow_forward</span></button>
@@ -25,9 +25,58 @@
       </div>
     </div>
   </section>
-  <section class="container-fluid d-flex flex-column align-items-center justify-content-center" id="home-layout__about">
-    <h2 class="display-2 fw-bold">About Us</h2>
-    <p class="p-3">The Peoples Project is a non-profit organization that is dedicated to improving the lives of older people. We provide a range of services that help older people to live independently and with dignity. Our services include home care, social activities, and support for carers. We also campaign for better services for older people and work to raise awareness of the issues that affect them.</p>
-    <button class="btn d-flex px-3" href="/about" style="text-decoration: none;"><h4>Learn more <span class="material-symbols-sharp" id="arrow_forward">arrow_forward</span></h4></button>
+  <section class="container-fluid gap-3 d-flex flex-column align-items-center justify-content-center" id="home-layout__banner">
+    <i class="fa-solid fa-angles-down mb-5 pb-3" id="arrow_down" style="transform: scale(5, 5); filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
+    <span class="text-center">
+      <h1 class="display-1 fw-bold" style="font-family: var(--heading-font);">What is different about us</h1>
+      <p>Our mission is to provide a safe and secure environment for older people to live in, because we believe that everyone deserves to live in a place where they feel safe and secure.</p>
+    </span>
+    <img src="https://images.pexels.com/photos/7329698/pexels-photo-7329698.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="w-100" alt="..." style="max-height: 600px; object-fit: cover;" />
+  </section>
+  <section class="container-fluid gap-3 my-5 d-flex align-items-start justify-content-center" id="home-layout__banner">
+    <span class="text-start">
+      <h1 class="display-1 fw-bold" style="font-family: var(--heading-font);">Our reviews say it all</h1>
+      <p>We have been providing a safe and secure environment for older people for over 10 years, and our reviews speak for themselves.</p>
+    </span>
+    <div class="d-flex justify-content-center gap-3 reviews-cards">
+      <div class="card p-3">
+        <img src="https://images.pexels.com/photos/3018993/pexels-photo-3018993.jpeg?auto=compress&cs=tinysrgb&w=600" class="card-img-top align-self-center" alt="..." style="width: 160px; height: 160px; border-radius: 50%; object-fit: cover;" />
+        <div class="card-body">
+          <h5 class="card-title">Victor suarez</h5>
+          <p class="card-text">
+            "I have been living here for over 5 years and I have never felt safer."<br />- Oct, 2023
+          </p>
+          <div class="d-flex">
+            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
+            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
+            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
+            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
+          </div>
+        </div>
+      </div>
+      <div class="card p-3">
+        <img src="https://images.pexels.com/photos/3768117/pexels-photo-3768117.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top align-self-center" alt="..." style="width: 160px; height: 160px; border-radius: 50%; object-fit: cover;" />
+        <div class="card-body">
+          <h5 class="card-title">Sonia Jenkins</h5>
+          <p class="card-text">
+            "I am so grateful for the care and support I have received here."<br />- Sep, 2024
+          </p>
+          <div class="d-flex">
+            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
+            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
+            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
+            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
+            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="container-fluid gap-3 d-flex flex-column align-items-center justify-content-center" id="home-layout__banner" style="margin-top: 15rem; margin-bottom: 15rem;">
+    <span class="text-center">
+      <h1 class="display-1 fw-bold" style="font-family: var(--heading-font);">Its time to <span class="px-2" style="color: #e74e2c;">book</span> your stay</h1>
+      <p>Our rooms are filling up fast, so book your stay today to avoid disappointment.</p>
+    </span>
+    <a class="btn btn-primary" href="/rooms">Book now</a>
   </section>
 {% endblock %}

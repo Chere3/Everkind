@@ -30,6 +30,7 @@ thePeoplesProyect = Flask(__name__)
 # pythonanywhere
 thePeoplesProyect.config.from_object(config["development"])
 thePeoplesProyect.config.from_object(config["mail"])
+
 db = MySQL(thePeoplesProyect)
 mail = Mail(thePeoplesProyect)
 adminSession = LoginManager(thePeoplesProyect)
@@ -536,7 +537,5 @@ def internal_server_error(e):
     return render_template("500.html"), 500
 
 
-"""
 if __name__ == "__main__":
-    thePeoplesProyect.run(port=3300)
-"""
+    thePeoplesProyect.run()
