@@ -24,16 +24,14 @@ import traceback
 
 
 # Create the app
-thePeoplesProyect = Flask(__name__)
+everkind = Flask(__name__)
 
+everkind.config.from_object(config["development"])
+everkind.config.from_object(config["mail"])
 
-# pythonanywhere
-thePeoplesProyect.config.from_object(config["development"])
-thePeoplesProyect.config.from_object(config["mail"])
-
-db = MySQL(thePeoplesProyect)
-mail = Mail(thePeoplesProyect)
-adminSession = LoginManager(thePeoplesProyect)
+db = MySQL(everkind)
+mail = Mail(everkind)
+adminSession = LoginManager(everkind)
 
 
 @adminSession.user_loader
@@ -41,7 +39,7 @@ def load_user(id):
     return ModelUser.get_by_id(db, id)
 
 
-@thePeoplesProyect.route("/")
+@everkind.route("/")
 def home():
     if current_user.is_authenticated:
         if current_user.role_id == 2:
@@ -60,7 +58,7 @@ def home():
     return render_template("home.html")
 
 
-@thePeoplesProyect.route("/home")
+@everkind.route("/home")
 def homepage():
     if not current_user.is_authenticated:
         return redirect("/")
@@ -68,8 +66,13 @@ def homepage():
         return render_template("home.html")
 
 
+@everkind.route("/about")
+def about():
+    return render_template("info/about.html")
+
+
 # Auth routes
-@thePeoplesProyect.route("/auth/register", methods=["GET", "POST"])
+@everkind.route("/auth/register", methods=["GET", "POST"])
 def signup():
     if current_user.is_authenticated:
         return redirect("/onboarding")
@@ -126,7 +129,7 @@ def signup():
 
             # Send a message to the user
             message = Message(
-                "Welcome to the People's Project",
+                "Welcome to Everkind",
                 recipients=[user.username],
             )
 
@@ -146,7 +149,7 @@ def signup():
     return render_template("auth/signup.html")
 
 
-@thePeoplesProyect.route("/onboarding", methods=["GET", "POST"])
+@everkind.route("/onboarding", methods=["GET", "POST"])
 def complete_profile():
     if not current_user.is_authenticated:
         return redirect("/auth/login")
@@ -219,7 +222,7 @@ def complete_profile():
         return render_template("auth/complete_profile.html")
 
 
-@thePeoplesProyect.route("/auth/login", methods=["GET", "POST"])
+@everkind.route("/auth/login", methods=["GET", "POST"])
 def signin():
     if current_user.is_authenticated:
         return redirect("/onboarding")
@@ -261,14 +264,14 @@ def signin():
     return render_template("auth/signin.html")
 
 
-@thePeoplesProyect.route("/auth/logout")
+@everkind.route("/auth/logout")
 def logout():
     logout_user()
     # Send to home page
     return redirect("/")
 
 
-@thePeoplesProyect.route("/rooms")
+@everkind.route("/rooms")
 def rooms():
     rooms = ModelRoom.get_all(db)
     # Convert tuple to array
@@ -278,7 +281,7 @@ def rooms():
     return render_template("rooms/rooms.html", rooms=rooms)
 
 
-@thePeoplesProyect.route("/admin/room/create", methods=["GET", "POST"])
+@everkind.route("/admin/room/create", methods=["GET", "POST"])
 def create_room():
     if current_user.role_id != 2:
         return render_template("404.html")
@@ -319,7 +322,7 @@ def create_room():
     return render_template("admin/create-room.html")
 
 
-@thePeoplesProyect.route("/admin/room/update/<int:id>", methods=["GET", "POST"])
+@everkind.route("/admin/room/update/<int:id>", methods=["GET", "POST"])
 def update_room(id):
     if current_user.role_id != 2:
         return render_template("404.html")
@@ -361,7 +364,7 @@ def update_room(id):
     return render_template("admin/update-room.html", room=room)
 
 
-@thePeoplesProyect.route("/admin/room/delete/<int:id>", methods=["POST"])
+@everkind.route("/admin/room/delete/<int:id>", methods=["POST"])
 def delete_room(id):
     if current_user.role_id != 2:
         return render_template("404.html")
@@ -375,13 +378,13 @@ def delete_room(id):
         return redirect("/")
 
 
-@thePeoplesProyect.route("/rooms/<int:id>")
+@everkind.route("/rooms/<int:id>")
 def room(id):
     room = ModelRoom.get_by_id(db, id)
     return render_template("rooms/room.html", room=room)
 
 
-@thePeoplesProyect.route("/rooms/<int:id>/book")
+@everkind.route("/rooms/<int:id>/book")
 def book_room(id):
     if not current_user.is_authenticated:
         return redirect("/auth/login")
@@ -399,7 +402,7 @@ def book_room(id):
         return redirect("/")
 
 
-@thePeoplesProyect.route("/rooms/<int:id>/cancel")
+@everkind.route("/rooms/<int:id>/cancel")
 def cancel_room(id):
     if not current_user.is_authenticated:
         return redirect("/auth/login")
@@ -417,7 +420,7 @@ def cancel_room(id):
         return redirect("/")
 
 
-@thePeoplesProyect.route("/rooms/manage")
+@everkind.route("/rooms/manage")
 def manage_rooms():
     if not current_user.is_authenticated:
         return redirect("/auth/login")
@@ -432,7 +435,7 @@ def manage_rooms():
     return render_template("rooms/manage.html", rooms=rooms)
 
 
-@thePeoplesProyect.route("/orders")
+@everkind.route("/orders")
 def orders():
     if not current_user.is_authenticated:
         return redirect("/auth/login")
@@ -445,7 +448,7 @@ def orders():
     return render_template("dashboards/orders.html", orders=orders)
 
 
-@thePeoplesProyect.route("/admin/users", methods=["GET", "POST"])
+@everkind.route("/admin/users", methods=["GET", "POST"])
 def users():
     if current_user.role_id != 2:
         return render_template("404.html")
@@ -456,7 +459,7 @@ def users():
     return render_template("admin/users.html", users=u)
 
 
-@thePeoplesProyect.route("/admin/users/create", methods=["GET", "POST"])
+@everkind.route("/admin/users/create", methods=["GET", "POST"])
 def create_user():
     # Check if the request is a POST
     ModelUser.create(
@@ -476,7 +479,7 @@ def create_user():
     return redirect("/admin/users")
 
 
-@thePeoplesProyect.route("/admin/users/update/<int:id>", methods=["POST"])
+@everkind.route("/admin/users/update/<int:id>", methods=["POST"])
 def update_user(id):
     try:
         ModelUser.update(
@@ -503,7 +506,7 @@ def update_user(id):
         return redirect("/admin/users")
 
 
-@thePeoplesProyect.route("/admin/users/delete/<int:id>", methods=["POST"])
+@everkind.route("/admin/users/delete/<int:id>", methods=["POST"])
 def delete_user(id):
     try:
         ModelUser.delete(db, id)
@@ -518,24 +521,24 @@ def delete_user(id):
         return redirect("/admin/users")
 
 
-@thePeoplesProyect.route("/api")
+@everkind.route("/api")
 def api():
     return {
-        "name": "thePeoplesProyect",
+        "name": "everkind",
         "version": "1.0.0",
-        "description": "A simple API for the people",
+        "description": "A simple API for the care",
     }
 
 
-@thePeoplesProyect.errorhandler(404)
+@everkind.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
 
 
-@thePeoplesProyect.errorhandler(500)
+@everkind.errorhandler(500)
 def internal_server_error(e):
     return render_template("500.html"), 500
 
 
 if __name__ == "__main__":
-    thePeoplesProyect.run()
+    everkind.run()

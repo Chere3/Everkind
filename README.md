@@ -1,2 +1,2 @@
-# The peoples proyect.
+# Everkind
 We are a foundation.
