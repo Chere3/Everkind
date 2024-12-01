@@ -3,10 +3,10 @@
   Everkind
 {% endblock %}
 {% block body %}
-  <section class="d-flex container-fluid align-content-center" id="home-layout__banner" style="margin-bottom: 20%;">
+  <section class="d-flex container-fluid align-content-center" id="home-layout__banner" style="margin-bottom: 38vh;">
     <span>
-      <h1 class="p-3 fw-bold" style="font-family: var(--heading-font); font-size: var(--display-size);">Living with dignity, led by kindness</h1>
-      <button class="btn d-flex px-3 display-2" href="/mission" style="text-decoration: none;">See how <span class="material-symbols-sharp" id="arrow_forward">arrow_forward</span></button>
+      <h1 class="p-3 fw-bold fst-italic" style="font-family: var(--heading-font); font-size: var(--display-size);">Living with dignity, led by kindness</h1>
+      <a class="d-flex px-3 align-items-center h3" href="/about" style="text-decoration: none;">See how <span class="material-symbols-sharp" id="arrow_forward">arrow_forward</span></a>
     </span>
     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" style="width: 100%;">
       <div class="carousel-inner">
@@ -26,12 +26,12 @@
     </div>
   </section>
   <section class="container-fluid gap-3 d-flex flex-column align-items-center justify-content-center" id="home-layout__banner">
-    <i class="fa-solid fa-angles-down mb-5 pb-3" id="arrow_down" style="transform: scale(5, 5); filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
+    <i class="fa-solid fa-angles-down mb-5 pb-3" id="arrow_down" style="transform: scale(5, 5); filter: var(--filter-primary-color);"></i>
     <span class="text-center">
       <h1 class="display-1 fw-bold" style="font-family: var(--heading-font);">Our main goal, your safety</h1>
       <p>Our mission is to provide a safe and secure environment for older people to live in, because we believe that everyone deserves to live in a place where they feel safe and secure.</p>
     </span>
-    <img src="https://images.pexels.com/photos/7329698/pexels-photo-7329698.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="w-100" alt="..." style="max-height: 600px; object-fit: cover;" />
+    <img src="https://images.pexels.com/photos/7329698/pexels-photo-7329698.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="w-100 rounded-5" alt="..." style="max-height: 600px; object-fit: cover;" />
   </section>
   <section class="container-fluid gap-3 my-5 d-flex align-items-start justify-content-center" id="home-layout__banner">
     <span class="text-start">
@@ -39,34 +39,34 @@
       <p>We have been providing a safe and secure environment for older people for over 10 years, and our reviews speak for themselves.</p>
     </span>
     <div class="d-flex justify-content-center gap-3 reviews-cards">
-      <div class="card p-3">
-        <img src="https://images.pexels.com/photos/3018993/pexels-photo-3018993.jpeg?auto=compress&cs=tinysrgb&w=600" class="card-img-top align-self-center" alt="..." style="width: 160px; height: 160px; border-radius: 50%; object-fit: cover;" />
+      <div class="card border-black p-3 rounded-4">
+        <img src="https://images.pexels.com/photos/3018993/pexels-photo-3018993.jpeg?auto=compress&cs=tinysrgb&w=600" class="card-img-top align-self-center border-2 border border-black" alt="..." style="width: 160px; height: 160px; border-radius: 50%; object-fit: cover;" />
         <div class="card-body">
-          <h5 class="card-title fw-bold">Victor suarez</h5>
+          <h5 class="card-title">Victor suarez</h5>
           <p class="card-text">
             I have been living here for over 5 years and I have never felt safer.<br /><span class="fst-italic">Oct, 2023</span>
           </p>
           <div class="d-flex">
-            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
-            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
-            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
-            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
+            <i class="fa-solid fa-star" style="filter: var(--filter-primary-color); -webkit-text-stroke-color: black; -webkit-text-stroke-width: 1px;"></i>
+            <i class="fa-solid fa-star" style="filter: var(--filter-primary-color); -webkit-text-stroke-color: black; -webkit-text-stroke-width: 1px;"></i>
+            <i class="fa-solid fa-star" style="filter: var(--filter-primary-color); -webkit-text-stroke-color: black; -webkit-text-stroke-width: 1px;"></i>
+            <i class="fa-solid fa-star" style="filter: var(--filter-primary-color); -webkit-text-stroke-color: black; -webkit-text-stroke-width: 1px;"></i>
           </div>
         </div>
       </div>
-      <div class="card p-3">
-        <img src="https://images.pexels.com/photos/3768117/pexels-photo-3768117.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top align-self-center" alt="..." style="width: 160px; height: 160px; border-radius: 50%; object-fit: cover;" />
+      <div class="card border-black p-3 rounded-4">
+        <img src="https://images.pexels.com/photos/3768117/pexels-photo-3768117.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="card-img-top align-self-center border-black border-2 border" alt="..." style="width: 160px; height: 160px; border-radius: 50%; object-fit: cover;" />
         <div class="card-body">
-          <h5 class="card-title fw-bold">Sonia Jenkins</h5>
+          <h5 class="card-title">Sonia Jenkins</h5>
           <p class="card-text">
             I am so grateful for the care and support I have received here.<br /><span class="fst-italic">Sep, 2024</span>
           </p>
           <div class="d-flex">
-            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
-            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
-            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
-            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
-            <i class="fa-solid fa-star" style="filter: brightness(0) saturate(100%) invert(42%) sepia(70%) saturate(5337%) hue-rotate(351deg) brightness(100%) contrast(81%);"></i>
+            <i class="fa-solid fa-star" style="filter: var(--filter-primary-color); -webkit-text-stroke-color: black; -webkit-text-stroke-width: 1px;"></i>
+            <i class="fa-solid fa-star" style="filter: var(--filter-primary-color); -webkit-text-stroke-color: black; -webkit-text-stroke-width: 1px;"></i>
+            <i class="fa-solid fa-star" style="filter: var(--filter-primary-color); -webkit-text-stroke-color: black; -webkit-text-stroke-width: 1px;"></i>
+            <i class="fa-solid fa-star" style="filter: var(--filter-primary-color); -webkit-text-stroke-color: black; -webkit-text-stroke-width: 1px;"></i>
+            <i class="fa-solid fa-star" style="filter: var(--filter-primary-color); -webkit-text-stroke-color: black; -webkit-text-stroke-width: 1px;"></i>
           </div>
         </div>
       </div>
@@ -74,7 +74,7 @@
   </section>
   <section class="container-fluid gap-3 d-flex flex-column align-items-center justify-content-center" id="home-layout__banner" style="margin-top: 15rem; margin-bottom: 15rem;">
     <span class="text-center">
-      <h1 class="display-1 fw-bold" style="font-family: var(--heading-font);">Its time to <span class="px-2 text-decoration-underline" style="color: #e74e2c; transform: rotate(-10deg);">book</span> your stay</h1>
+      <h1 class="display-1 fw-bold" style="font-family: var(--heading-font);">Its time to <span class="px-2 text-decoration-underline" style="color: var(--primary-color); transform: rotate(-10deg);">book</span> your stay</h1>
       <p>Our rooms are filling up fast, so book your stay today to avoid disappointment.</p>
     </span>
     <a class="btn btn-primary" href="/rooms">Book now</a>

@@ -4,9 +4,25 @@
 
   --display-size: calc(50px + 56 * ((100vw - 768px) / 1152));
   --display-size-small: calc(30px + 56 * ((100vw - 768px) / 1152));
-  --font-color: #020202;
 
-  --site-bg: #f1ede7;
+  --primary-color: #4ecb4b;
+  --secondary-color: #fcf5eb;
+  --tertiary-color: color-mix(in hsl, var(--primary-color), black 20%);
+  --foreground-color: #020202;
+
+  --filter-primary-color: brightness(0) saturate(100%) invert(65%) sepia(96%) saturate(351%) hue-rotate(66deg) brightness(88%) contrast(90%);
+
+  --font-color: var(--foreground-color);
+
+  --site-bg: var(--secondary-color);
+
+  --button-bg: var(--primary-color);
+  --button-tertiary: var(--tertiary-color);
+  --button-color: var(--foreground-color);
+  --button-hover: var(--tertiary-color);
+
+  --fa-border-color: var(--foreground-color);
+  --fa-border-width: 2px;
 }
 
 body {
@@ -15,55 +31,59 @@ body {
   background-color: var(--site-bg);
 }
 
-/** Elements **/
-input {
-  border-radius: 0;
-}
-
 .carousel {
   max-height: 50vh !important;
   max-width: 90% !important;
 }
 
+.card {
+  background-color: var(--secondary-color);
+}
+
+.form-control {
+  background-color: var(--secondary-color) !important;
+  border-color: #000000 !important;
+}
+
 .btn-primary {
-  background-color: #e74e2c;
-  border-color: #e74e2c;
-  color: white !important;
-  border-radius: 0;
+  background-color: var(--button-bg);
+  border-color: #000000;
+  color: var(--button-color) !important;
 }
 
 .btn-primary:hover {
-  background-color: #c34225;
-  border-color: #c34225;
-  color: white;
+  background-color: var(--button-tertiary);
+  border-color: #000000;
+  color: #000000 !important;
 }
 
 .btn-outline {
   background-color: transparent;
-  border-color: #e74e2c;
-  color: #e74e2c;
+  border-color: #000000;
+  color: var(--foreground-color) !important;
   border-radius: 0;
 }
 
 .btn-outline:hover {
-  background-color: #e74e2c;
-  border-color: #e74e2c;
-  color: white !important;
+  background-color: var(--button-bg);
+  border-color: #000000;
+  color: var(--button-color) !important;
 }
 
 .btn {
-  border-radius: 0;
-  color: #e74e2c;
+  border-radius: 2rem;
+  color: var(--button-bg);
+  padding: 0.5rem 1rem !important;
 }
 
 .btn:hover {
-  color: #c34225;
+  color: var(--button-color)
 }
 
 .card-dashboard:hover {
   /* Color transition */
   transition: 0.1s;
-  background-color: #dddddd;
+  background-color: var(--button-bg);
 }
 
 
@@ -114,21 +134,21 @@ input {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1ede7;
+  background: var(--secondary-color);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #e74e2c;
+  background: var(--primary-color);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #c34225;
+  background: var(--tertiary-color);
 }
 
 /* Firefox scrollbar */
 * {
   scrollbar-width: 10px;
-  scrollbar-color: #e74e2c #f1ede7;
+  scrollbar-color: var(--primary-color) var(--secondary-color);
 }
 
 #home-layout__banner {
