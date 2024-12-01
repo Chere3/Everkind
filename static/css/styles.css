@@ -158,6 +158,12 @@ body {
   padding: 0 10%;
 }
 
+/* Text selection color */
+::selection {
+  background-color: var(--primary-color);
+  color: var(--foreground-color);
+}
+
 /* media queries */
 @media (max-width: 768px) {
   #home-layout__banner {
