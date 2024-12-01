@@ -11,11 +11,11 @@
     </div>
     <div class="d-grid w-full gap-2 my-5" style="grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));">
       {% for room in rooms %}
-        <div class="card rounded-5">
-          <div class="rounded-2 card-img image{{ room.3 }} w-full position-relative" style="background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(0,0,0, 0.80) 100%), url({{ room.11 }}); background-size: cover; background-position: center; height: 200px;" alt="{{ room.name }}">
+        <div class="card border-black rounded-5">
+          <div class="rounded-2 rounded-top-5 card-img image{{ room.3 }} w-full position-relative" style="background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(0,0,0, 0.80) 100%), url({{ room.11 }}); background-size: cover; background-position: center; height: 200px;" alt="{{ room.name }}">
             <h2 class="position-absolute start-50 translate-middle text-white" style="font-family: var(--heading-font); top: 90%;">#{{ room.2 }}</h2>
           </div>
-          <div class="card-body d-flex flex-column justify-content-between bg-white gap-3">
+          <div class="card-body d-flex flex-column justify-content-between gap-3">
             <article>
               <h5 class="card-title">{{ room.1 }}</h5>
               <h6 class="card-text">Capacity: <i class="fa-solid fa-people-group"></i> {{ room.3 }} - {{ room.9 }}</h6>
