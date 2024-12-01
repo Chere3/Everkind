@@ -172,6 +172,10 @@ body {
     width: 100%;
   }
 
+  #auth_image {
+    display: none;
+  }
+
   .reviews-cards {
     flex-direction: column;
     justify-content: center;
