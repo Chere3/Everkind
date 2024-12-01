@@ -128,9 +128,9 @@ body {
   filter: brightness(0.5);
 }
 
-/* Modern scrollbar with support for firefox */
+/* Rounded scrollbar with support for Firefox */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
@@ -139,16 +139,13 @@ body {
 
 ::-webkit-scrollbar-thumb {
   background: var(--primary-color);
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  min-height: 24px !important;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--tertiary-color);
-}
-
-/* Firefox scrollbar */
-* {
-  scrollbar-width: 10px;
-  scrollbar-color: var(--primary-color) var(--secondary-color);
 }
 
 #home-layout__banner {
@@ -169,6 +166,10 @@ body {
   #home-layout__banner {
     flex-direction: column;
     align-items: center;
+  }
+
+  #home_title_limiter {
+    width: 100%;
   }
 
   .reviews-cards {
