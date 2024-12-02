@@ -1,3 +1,6 @@
+import os
+
+
 class Config:
     DEBUG = True
     SECRET_KEY = "sbxJfPvf27kmD-X2UpkipWlK7KIA"
@@ -26,9 +29,9 @@ class MailConfig(Config):
     MAIL_PORT = 587
     MAIL_USE_TLS = True
     MAIL_USE_SSL = False
-    MAIL_USERNAME = "diego.romero1798@alumnos.udg.mx"
-    MAIL_PASSWORD = "cefu pjtk lvbw irhn"
-    MAIL_DEFAULT_SENDER = "diego.romero1798@alumnos.udg.mx"
+    MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
+    MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
+    MAIL_DEFAULT_SENDER = os.environ.get("MAIL_USERNAME")
 
 
 config = {"development": DevelopmentConfig, "mail": MailConfig}
