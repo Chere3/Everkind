@@ -1,30 +1,26 @@
-from models.entities.RoomType import RoomType
+from app.models.entities.Guest import Guest
 
 
-class ModelRoomType:
+class ModelGuest:
     """
-    A class representing a room type model.
+    A class representing a guest model.
     Methods:
-    - create(db, room_type): Create a new room type.
-    - get_all(db): Get all room types.
-    - get_by_id(db, id): Get a room type by ID.
-    - update(db, room_type): Update an existing room type.
-    - delete(db, id): Delete a room type.
+    - create(db, guest): Creates a new guest in the database.
+    - get_all(db): Retrieves all guests from the database.
+    - get_by_id(db, id): Retrieves a guest by their ID from the database.
+    - update(db, guest): Updates a guest in the database.
+    - delete(db, id): Deletes a guest from the database.
     """
 
     @classmethod
-    def create(self, db, room_type):
+    def create(self, db, guest):
         try:
             # Get the cursor from the database connection
             cursor = db.connection.cursor()
-            # Execute the SQL query to insert a new room type into the room_types table
+            # Execute the SQL query to insert a new guest into the guests table
             cursor.execute(
-                "INSERT INTO room_types (type_name, description, photo) VALUES (%s, %s, %s)",
-                (
-                    room_type.type_name,
-                    room_type.description,
-                    room_type.photo,
-                ),
+                "INSERT INTO guests (name, contact_info) VALUES (%s, %s)",
+                (guest.name, guest.contact_info),
             )
             # Commit the transaction to save the changes in the database
             db.connection.commit()
@@ -37,12 +33,12 @@ class ModelRoomType:
         try:
             # Get the cursor from the database connection
             cursor = db.connection.cursor()
-            # Execute the SQL query to retrieve all room types from the room_types table
-            cursor.execute("SELECT * FROM room_types")
+            # Execute the SQL query to retrieve all guests from the guests table
+            cursor.execute("SELECT * FROM guests")
             # Fetch all the results from the executed query
-            room_types = cursor.fetchall()
-            # Return the list of room types
-            return room_types
+            guests = cursor.fetchall()
+            # Return the list of guests
+            return guests
         except Exception as ex:
             # Raise an exception if any error occurs
             raise Exception(ex)
@@ -52,31 +48,25 @@ class ModelRoomType:
         try:
             # Get the cursor from the database connection
             cursor = db.connection.cursor()
-            # Execute the SQL query to retrieve a room type by its ID from the room_types table
-            cursor.execute("SELECT * FROM room_types WHERE id = %s", (id,))
+            # Execute the SQL query to retrieve a guest by their ID from the guests table
+            cursor.execute("SELECT * FROM guests WHERE id = %s", (id,))
             # Fetch the result from the executed query
-            room_type = cursor.fetchone()
-            # Return the room type
-            return room_type
-
+            guest = cursor.fetchone()
+            # Return the guest object
+            return Guest(guest[1], guest[2], guest[3], guest[4])
         except Exception as ex:
             # Raise an exception if any error occurs
             raise Exception(ex)
 
     @classmethod
-    def update(self, db, room_type):
+    def update(self, db, guest):
         try:
             # Get the cursor from the database connection
             cursor = db.connection.cursor()
-            # Execute the SQL query
+            # Execute the SQL query to update a guest in the guests table
             cursor.execute(
-                "UPDATE room_types SET type_name = %s, description = %s, photo = %s WHERE id = %s",
-                (
-                    room_type.type_name,
-                    room_type.description,
-                    room_type.photo,
-                    room_type.id,
-                ),
+                "UPDATE guests SET name = %s, contact_info = %s WHERE id = %s",
+                (guest.name, guest.contact_info, guest.id),
             )
             # Commit the transaction to save the changes in the database
             db.connection.commit()
@@ -89,8 +79,8 @@ class ModelRoomType:
         try:
             # Get the cursor from the database connection
             cursor = db.connection.cursor()
-            # Execute the SQL query to delete a room type by its ID from the room_types table
-            cursor.execute("DELETE FROM room_types WHERE id = %s", (id,))
+            # Execute the SQL query to delete a guest from the guests table by ID
+            cursor.execute("DELETE FROM guests WHERE id = %s", (id,))
             # Commit the transaction to save the changes in the database
             db.connection.commit()
         except Exception as ex:

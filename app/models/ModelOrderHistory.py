@@ -1,4 +1,4 @@
-from models.entities.OrderHistory import OrderHistory
+from app.models.entities.OrderHistory import OrderHistory
 
 
 class ModelOrderHistory:

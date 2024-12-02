@@ -1,10 +1,9 @@
 from flask import Flask
 from flask_mysqldb import MySQL
 from flask_login import LoginManager
+from app.models import ModelUser
 from config import config
 from flask_mail import Mail
-
-from models.ModelUser import ModelUser
 
 
 # Create the app
@@ -25,3 +24,5 @@ def load_user(id):
 
 if __name__ == "__main__":
     app.run()
+
+from app import routes

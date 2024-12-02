@@ -8,19 +8,46 @@ from werkzeug.security import generate_password_hash
 
 from datetime import datetime
 
-from models.ModelOrderHistory import ModelOrderHistory
-from models.ModelUser import ModelUser
-from models.ModelOccupant import ModelOccupant
-from models.ModelGuest import ModelGuest
-from models.ModelPartialRooms import ModelPartialRooms
-from models.ModelRoom import ModelRoom
+from app.models.ModelOrderHistory import ModelOrderHistory
+from app.models.ModelUser import ModelUser
+from app.models.ModelOccupant import ModelOccupant
+from app.models.ModelGuest import ModelGuest
+from app.models.ModelPartialRooms import ModelPartialRooms
+from app.models.ModelRoom import ModelRoom
 
-from models.entities.PartialRoom import PartialRoom
-from models.entities.User import User
-from models.entities.Occupant import Occupant
-from models.entities.Guest import Guest
+from app.models.entities.PartialRoom import PartialRoom
+from app.models.entities.User import User
+from app.models.entities.Occupant import Occupant
+from app.models.entities.Guest import Guest
 
 import traceback
+
+
+@app.route("/")
+def home():
+    if current_user.is_authenticated:
+        if current_user.role_id == 2:
+            orders = ModelOrderHistory.get_all(db)
+            return render_template("admin/admin.html", user=current_user, orders=orders)
+        else:
+            if current_user.role_id == 1:
+                return redirect("/onboarding")
+            if current_user.role_id >= 3:
+                user = ModelOccupant.get_by_user_id(db, current_user.id)
+                orders = ModelOrderHistory.get_by_user_id(db, current_user.id)
+
+                return render_template(
+                    "dashboards/dashboard.html", user=user[0], orders=orders
+                )
+    return render_template("home.html")
+
+
+@app.route("/home")
+def homepage():
+    if not current_user.is_authenticated:
+        return redirect("/")
+    else:
+        return render_template("home.html")
 
 
 @app.route("/about")

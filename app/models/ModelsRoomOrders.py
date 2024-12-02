@@ -1,4 +1,4 @@
-from models.entities.RoomOrders import RoomOrders
+from app.models.entities.RoomOrders import RoomOrders
 
 
 class RoomOrdersModel:
