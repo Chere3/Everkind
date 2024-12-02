@@ -1,4 +1,4 @@
-from models.entities.Occupant import Occupant
+from app.models.entities.Occupant import Occupant
 
 
 class ModelOccupant:

@@ -1,5 +1,5 @@
-from models.entities import RoomType
-from models.entities.PartialRoom import PartialRoom
+from app.models.entities import RoomType
+from app.models.entities.PartialRoom import PartialRoom
 
 
 class ModelPartialRooms:
