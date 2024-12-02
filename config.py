@@ -3,7 +3,7 @@ import os
 
 class Config:
     DEBUG = True
-    SECRET_KEY = "sbxJfPvf27kmD-X2UpkipWlK7KIA"
+    SECRET_KEY = os.environ.get("SECRET_KEY")
     PORT = 3300
 
 
