@@ -64,12 +64,12 @@
       <h1 class="display-1 fw-bold" style="font-family: var(--heading-font);">Its time to <span class="px-2 text-decoration-underline" style="color: var(--primary-color); transform: rotate(-10deg);">book</span> your stay</h1>
       <p>Our rooms are filling up fast, so book your stay today to avoid disappointment.</p>
     </span>
-    <a class="btn btn-primary" href="/rooms">Book now</a>
+    <a class="btn btn-primary" style="cursor: auto;" href="/rooms">Book now</a>
   </section>
   <div class="cursor"></div>
   <div class="cursor2"></div>
   <style>
-    body {
+    * {
       cursor: none;
     }
     
@@ -96,6 +96,17 @@
       transform: translate(-50%, -50%);
       pointer-events: none;
       transition: width 0.3s, height 0.3s, opacity 0.3s;
+    }
+    
+    .hover {
+      background-color: black;
+      opacity: 0.3;
+    }
+    
+    .cursorinnerhover {
+      width: 30px;
+      height: 30px;
+      opacity: 0.5;
     }
   </style>
   <script>
