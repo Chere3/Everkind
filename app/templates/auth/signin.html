@@ -38,8 +38,7 @@
                   </div>
                 {% endfor %}
               </fieldset>
-              <fieldset>{{ form.remember_me.label }}
-                {{ form.remember_me(class='form-check-input me-2 rounded-2', style='color: var(--primary-color) !important;') }}</fieldset>
+              <fieldset>{{ form.remember_me(class='form-check-input me-2 rounded-2', style='color: var(--primary-color) !important;') }}{{ form.remember_me.label }}</fieldset>
               {{ form.submit(class='btn btn-primary btn-lg', style='width: 60%;') }}
             </form>
             <span class="d-flex flex-column gap-3 w-100 align-items-center">
