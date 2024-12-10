@@ -14,10 +14,11 @@ app.config.from_object(config["mail"])
 
 db = MySQL(app)
 mail = Mail(app)
-adminSession = LoginManager(app)
+login = LoginManager(app)
+login.login_view = "login"
 
 
-@adminSession.user_loader
+@login.user_loader
 def load_user(id):
     return ModelUser.get_by_id(db, id)
 

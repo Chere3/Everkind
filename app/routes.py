@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash
 
 from datetime import datetime
 
+from app.forms import LoginForm, RegisterForm
 from app.models.ModelOrderHistory import ModelOrderHistory
 from app.models.ModelUser import ModelUser
 from app.models.ModelOccupant import ModelOccupant
@@ -58,79 +59,82 @@ def about():
 # Auth routes
 @app.route("/auth/register", methods=["GET", "POST"])
 def signup():
+    form = RegisterForm()
     if current_user.is_authenticated:
         return redirect("/onboarding")
     if request.method == "POST":
         try:
-            # Get the user info from the form
-            username = request.form["username"]
-            password = request.form["password"]
-            repeatPassword = request.form["repeat-password"]
+            if form.validate_on_submit():
+                flash("Register requested for user {}".format(form.username.data))
+                # Get the user info from the form
+                username = request.form["username"]
+                password = request.form["password"]
+                repeatPassword = request.form["repeat-password"]
 
-            if password != repeatPassword:
-                flash("Passwords does not match")
-                return redirect(request.url)
+                if password != repeatPassword:
+                    flash("Passwords does not match")
+                    return redirect(request.url)
 
-            encryptedPassword = generate_password_hash(password)
+                encryptedPassword = generate_password_hash(password)
 
-            # Check if user already exists
-            cursor = db.connection.cursor()
-            cursor.execute("SELECT * FROM users WHERE username = %s", [username])
+                # Check if user already exists
+                cursor = db.connection.cursor()
+                cursor.execute("SELECT * FROM users WHERE username = %s", [username])
 
-            user = cursor.fetchone()
-            if user:
-                flash("User already exists")
-                return redirect(request.url)
+                user = cursor.fetchone()
+                if user:
+                    flash("User already exists")
+                    return redirect(request.url)
 
-            # Insert user info the database
-            ModelUser.create(
-                db,
-                User(
-                    0,
-                    username,
-                    encryptedPassword,
-                    1,
-                    datetime.datetime.now(),
-                    datetime.datetime.now(),
-                ),
-            )
+                # Insert user info the database
+                ModelUser.create(
+                    db,
+                    User(
+                        0,
+                        username,
+                        encryptedPassword,
+                        1,
+                        datetime.datetime.now(),
+                        datetime.datetime.now(),
+                    ),
+                )
 
-            # Close the cursor and commit the changes
-            db.connection.commit()
-            cursor.close()
+                # Close the cursor and commit the changes
+                db.connection.commit()
+                cursor.close()
 
-            user = ModelUser.signin(
-                db,
-                User(
-                    0,
-                    username,
-                    password,
-                    None,
-                    None,
-                    None,
-                ),
-            )
+                user = ModelUser.signin(
+                    db,
+                    User(
+                        0,
+                        username,
+                        password,
+                        None,
+                        None,
+                        None,
+                    ),
+                )
 
-            # Send a message to the user
-            message = Message(
-                "Welcome to Everkind",
-                recipients=[user.username],
-            )
+                # Send a message to the user
+                message = Message(
+                    "Welcome to Everkind",
+                    recipients=[user.username],
+                )
 
-            message.html = render_template("mails/register.html", user=user)
-            mail.send(message)
+                message.html = render_template("mails/register.html", user=user)
+                mail.send(message)
 
-            login_user(user)
+                login_user(user)
 
-            # Send to home page
-            return redirect("/")
+                # Send to home page
+                return redirect("/")
 
         except Exception:
             flash("An unexpected error occurred")
             traceback.print_exc()
             return redirect(request.url)
 
-    return render_template("auth/signup.html")
+    return render_template("auth/signup.html", form=form)
 
 
 @app.route("/onboarding", methods=["GET", "POST"])
@@ -208,44 +212,56 @@ def complete_profile():
 
 @app.route("/auth/login", methods=["GET", "POST"])
 def signin():
+    form = LoginForm()
     if current_user.is_authenticated:
         return redirect("/onboarding")
     # Check if the request is a POST
     if request.method == "POST":
         try:
-            # Get the user info from the form
-            user = User(
-                0, request.form["username"], request.form["password"], None, None, None
-            )
-            # Get the user from the database
-            authUser = ModelUser.signin(db, user)
+            if form.validate_on_submit():
+                flash(
+                    "Login requested for user {}, remember_me={}".format(
+                        form.username.data, form.remember_me.data
+                    )
+                )
+                # Get the user info from the form
+                user = User(
+                    0,
+                    request.form["username"],
+                    request.form["password"],
+                    None,
+                    None,
+                    None,
+                )
+                # Get the user from the database
+                authUser = ModelUser.signin(db, user)
 
-            # Check if the user exists
-            if authUser is not None:
-                login_user(authUser)
-                if authUser.password:
-                    # Check if the profile is admin or user
-                    if authUser.role_id == 2:
-                        return render_template("admin/admin.html")
+                # Check if the user exists
+                if authUser is not None:
+
+                    if authUser.password:
+                        # Check if the profile is admin or user
+                        if authUser.role_id == 2:
+                            return render_template("admin/admin.html")
+                        else:
+                            if authUser.role_id == 1:
+                                return redirect("/onboarding")
+                            if authUser.role_id >= 3:
+                                return redirect("/")
                     else:
-                        if authUser.role_id == 1:
-                            return redirect("/onboarding")
-                        if authUser.role_id >= 3:
-                            return redirect("/")
+                        # Send a message if the username or password is incorrect
+                        flash("Email or password incorrect")
+                        return redirect(request.url)
                 else:
-                    # Send a message if the username or password is incorrect
-                    flash("Email or password incorrect")
+                    # Send a message if the user does not exist
+                    flash("The user does not exist")
                     return redirect(request.url)
-            else:
-                # Send a message if the user does not exist
-                flash("The user does not exist")
-                return redirect(request.url)
         except Exception:
             flash("An unexpected error occurred")
             traceback.print_exc()
             return redirect(request.url)
 
-    return render_template("auth/signin.html")
+    return render_template("auth/signin.html", form=form)
 
 
 @app.route("/auth/logout")
