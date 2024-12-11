@@ -3,7 +3,7 @@
   Everkind
 {% endblock %}
 {% block body %}
-  <section class="d-flex container-fluid align-content-center" id="home-layout__banner" style="margin-bottom: 38vh;">
+  <section class="d-flex container-fluid align-content-center position-relative" id="home-layout__banner" style="margin-bottom: 38vh;">
     <span class="position-relative w-100">
       <div class="position-absolute top-0 w-100 h-100 rounded-5" style="left: 0; background-color: rgba(0, 0, 0, 0.7);"></div>
       <span class="position-absolute top-50 start-50 translate-middle text-white d-flex flex-column text-center" id="home_title_limiter"><h1 class="fw-bold" style="font-family: var(--heading-font);"><span style="color: var(--primary-color);">Everkind</span>, <br /> where safety meets comfort</h1></span>
@@ -84,6 +84,7 @@
       left: 0;
       top: 0;
       transform: translate(calc(-50% + 15px), -50%);
+      z-index: 9999;
     }
     
     .cursor2 {
@@ -96,6 +97,7 @@
       transform: translate(-50%, -50%);
       pointer-events: none;
       transition: width 0.3s, height 0.3s, opacity 0.3s;
+      z-index: 9999;
     }
     
     .hover {
