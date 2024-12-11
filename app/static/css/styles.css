@@ -112,7 +112,7 @@ input[type="checkbox"]:focus {
 }
 
 .header-effect {
-  transition: background-color .3s cubic-bezier(.42, .00, .58, 1.00);
+  transition: all .3s cubic-bezier(.42, .00, .58, 1.00);
   backdrop-filter: blur(10px);
   position: fixed;
   background-color: #fcf5ebae;
