@@ -8,19 +8,10 @@ class Config:
 
 
 class DevelopmentConfig(Config):
-
-    MYSQL_HOST = "localhost"
-    MYSQL_USER = "root"
-    MYSQL_PASSWORD = ""
-    MYSQL_DB = "thepeoplelproyect"
-
-    """
-    # pythonanywhere
-    MYSQL_HOST = "thepeoplesproyect.mysql.pythonanywhere-services.com"
-    MYSQL_USER = "thepeoplesproyec"
-    MYSQL_PASSWORD = "ucw8kgn6unt4znz@MVY"
-    MYSQL_DB = "thepeoplesproyec$thepeoplesproyect"
-    """
+    MYSQL_HOST = os.environ.get("MYSQL_HOST", "localhost")
+    MYSQL_USER = os.environ.get("MYSQL_USER", "root")
+    MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD", "")
+    MYSQL_DB = os.environ.get("MYSQL_DB", "everkind")
 
 
 class MailConfig(Config):
