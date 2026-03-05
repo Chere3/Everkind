@@ -74,15 +74,19 @@ Everkind is a comprehensive Flask-based web application designed to modernize el
    pip install -r requirements.txt
    ```
 
-4. **Configure the database**
-   
-   Create a MySQL database and update `config.py` with your credentials:
-   ```python
-   MYSQL_HOST = 'localhost'
-   MYSQL_USER = 'your_username'
-   MYSQL_PASSWORD = 'your_password'
-   MYSQL_DB = 'everkind'
+4. **Configure environment variables**
+
+   Copy the template and update values:
+   ```bash
+   cp .env.example .env
    ```
+
+   Required variables:
+   - `DB_HOST`
+   - `DB_USER`
+   - `DB_PASSWORD`
+   - `DB_NAME`
+   - `SECRET_KEY`
 
 5. **Run the application**
    ```bash
