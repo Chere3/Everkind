@@ -1,9 +1,12 @@
+from dotenv import load_dotenv
 from flask import Flask
 from flask_mysqldb import MySQL
 from flask_login import LoginManager
 from app.models import ModelUser
 from config import config
 from flask_mail import Mail
+
+load_dotenv()
 
 
 # Create the app
